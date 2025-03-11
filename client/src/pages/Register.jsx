@@ -20,7 +20,7 @@ function Register(){
                         {required: true, message: "Please enter your name"}
                     ]}
                 >
-                    <Input/>
+                    <Input className="form-input"/>
                 </Form.Item>
 
                 <Form.Item
@@ -30,7 +30,7 @@ function Register(){
                         {required: true, message: "Please enter your e-mail"}
                     ]}
                 >
-                    <Input/>
+                    <Input className="form-input"/>
                 </Form.Item>
 
                 <Form.Item
@@ -40,11 +40,11 @@ function Register(){
                         {required: true, message: "Please enter your password"}
                     ]}
                 >
-                    <Input.Password/>
+                    <Input.Password className="form-input"/>
                 </Form.Item>
 
                 <Form.Item label={null}>
-                    <Button className="button highlight login-btn" type="primary" htmlType="submit" style={{width:"100%"}}>
+                    <Button className="button1 highlight login-btn" type="primary" htmlType="submit" >
                         Register
                     </Button>
                 </Form.Item>
