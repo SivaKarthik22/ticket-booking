@@ -35,7 +35,7 @@ userRouter.post('/login', async (req, resp) => {
         if(!userDoc){
             resp.status(400).send({
                 success: false,
-                message: "no such user exists. Please register new user"
+                message: "No such user exists. Please register new user"
             });
         }
 
@@ -44,12 +44,12 @@ userRouter.post('/login', async (req, resp) => {
         if(!authenticate){
             resp.status(401).send({
                 success: false,
-                message: "password is incorrect"
+                message: "Password is incorrect"
             });
         }
         resp.send({
             success: true,
-            message: "logged in successfully"
+            message: "Logged in successfully"
         });
     }
     catch(error){
