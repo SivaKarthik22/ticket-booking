@@ -9,19 +9,19 @@ userRouter.post('/register', async (req, resp)=>{
         if(userExists){
             resp.status(400).send({
                 success: false,
-                message: "the user already exists!"
+                message: "The user already exists!"
             });
         }
 
         const newUser = new UserModel(req.body);
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = bcrypt.hashSync(req.body.password, salt);
+        const salt = await bcrypt.genSalt(10); //generates a new salt 
+        const hashedPassword = bcrypt.hashSync(req.body.password, salt); //adds the salt to the password and hashes it
         newUser.password = hashedPassword;
         await newUser.save();
         
         resp.send({
             success: true,
-            message: "new user created successfully"
+            message: "New user created successfully"
         });
     }
     catch(error){
@@ -39,7 +39,7 @@ userRouter.post('/login', async (req, resp) => {
             });
         }
 
-        const authenticate = await bcrypt.compare(req.body.password, userDoc.password);
+        const authenticate = await bcrypt.compare(req.body.password, userDoc.password); //verify if user entered password is correct
 
         if(!authenticate){
             resp.status(401).send({

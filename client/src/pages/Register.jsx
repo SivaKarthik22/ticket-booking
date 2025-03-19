@@ -1,13 +1,54 @@
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, message, Spin } from "antd";
 import '../styles/component-styles.css';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
+import { registerUser } from "../user service/users";
+import { useState } from "react";
 
 function Register(){
+    const [messageApi, contextHolder] = message.useMessage();
+    const [form] = Form.useForm();
+    const navigate = useNavigate();
+    const [spinning, setSpinning] = useState(false);
+
+    async function registerData(values){
+        const responseData = await registerUser(values);
+        if(responseData.success){
+            messageApi.open({
+                type: 'success',
+                content: responseData.message,
+            });
+            form.resetFields();
+            setSpinning(true);
+            setTimeout(()=>{
+                setSpinning(false);
+                navigate("/login");
+            },1500);
+        }
+        else{
+            messageApi.open({
+                type: 'warning',
+                content: responseData.message,
+            });
+            form.resetFields();
+        }
+    }
+
     return(
         <div className="page-container">
+            
+            {contextHolder}
+
+            <Spin
+                spinning={spinning}
+                size="large"
+                fullscreen
+            />
+            
             <Form
+                form={form}
                 layout="vertical"
                 className="form-container"
+                onFinish={registerData}
             >
                 <h2 className="form-heading">
                     Register User

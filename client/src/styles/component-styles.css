@@ -6,6 +6,9 @@
 .highlight, .highlight:hover{
     background-color: var(--highlight);
 }
+.red{
+    color: var(--highlight);
+}
 .button1{
     padding: 20px;
 }
