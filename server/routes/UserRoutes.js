@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const userRouter = express.Router();
+const jwt = require('jsonwebtoken');
 const UserModel = require('../models/UserModel.js');
 
 userRouter.post('/register', async (req, resp)=>{
@@ -47,9 +48,13 @@ userRouter.post('/login', async (req, resp) => {
                 message: "Password is incorrect"
             });
         }
+
+        const jwtToken = jwt.sign({userId: userDoc._id}, 'this_is_my_show', {expiresIn: '2d'});
+
         resp.send({
             success: true,
-            message: "Logged in successfully"
+            message: "Logged in successfully",
+            token: jwtToken,
         });
     }
     catch(error){

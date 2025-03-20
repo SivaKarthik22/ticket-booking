@@ -1,11 +1,14 @@
 import { Form, Input, Button, message, Spin } from "antd";
 import '../styles/component-styles.css';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { loginUser } from "../user service/users";
+import { useState } from "react";
 
 function Login(){
     const [messageApi, contextHolder] = message.useMessage();
     const [form] = Form.useForm();
+    const navigate = useNavigate();
+    const [spinning, setSpinning] = useState(false);
 
     async function login(values){
         const responseData = await loginUser(values);
@@ -14,7 +17,13 @@ function Login(){
                 type: 'success',
                 content: responseData.message,
             });
+            localStorage.setItem("token", responseData.token)
             form.resetFields();
+            setSpinning(true);
+            setTimeout(()=>{
+                setSpinning(false);
+                navigate("/");
+            },1500);
         }
         else{
             messageApi.open({
@@ -29,6 +38,12 @@ function Login(){
         <div className="page-container">
             
             {contextHolder}
+
+            <Spin
+                spinning={spinning}
+                size="large"
+                fullscreen
+            />
 
             <Form
                 form={form}
