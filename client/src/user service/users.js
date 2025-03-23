@@ -19,3 +19,15 @@ export async function loginUser(values){
         return error.response.data;
     }
 }
+
+export async function authorizeUser(){
+    try{
+        const response = await userAxiosInstance.get("/get-valid-user", {
+            headers: {'authorization': `Bearer ${localStorage.getItem('token')}` }
+        });
+        return response.data;
+    }
+    catch(error){
+        return error.response.data;
+    }
+}

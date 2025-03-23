@@ -2,13 +2,24 @@ import { Form, Input, Button, message, Spin } from "antd";
 import '../styles/component-styles.css';
 import {Link, useNavigate} from 'react-router-dom';
 import { loginUser } from "../user service/users";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { authorizeUser } from "../user service/users";
 
 function Login(){
     const [messageApi, contextHolder] = message.useMessage();
     const [form] = Form.useForm();
     const navigate = useNavigate();
     const [spinning, setSpinning] = useState(false);
+
+    useEffect(()=>{
+        async function validateToken(){
+            const responseData = await authorizeUser();
+            if(responseData.success){
+                navigate('/');
+            }
+        }
+        validateToken();
+    },[]);
 
     async function login(values){
         const responseData = await loginUser(values);

@@ -1,33 +1,37 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const userRouter = express.Router();
 const jwt = require('jsonwebtoken');
 const UserModel = require('../models/UserModel.js');
 const authMiddleware = require('../middlewares/authMiddleware.js');
 
+const userRouter = express.Router();
+
 userRouter.post('/register', async (req, resp)=>{
     try{
-        const userExists = await UserModel.findOne({email: req.body.email});
-        if(userExists){
+        const existingUserDoc = await UserModel.findOne({email: req.body.email});
+        if(existingUserDoc){
             resp.status(400).send({
                 success: false,
                 message: "The user already exists!"
             });
         }
 
-        const newUser = new UserModel(req.body);
+        const newUserDoc = new UserModel(req.body);
         const salt = await bcrypt.genSalt(10); //generates a new salt 
         const hashedPassword = bcrypt.hashSync(req.body.password, salt); //adds the salt to the password and hashes it
-        newUser.password = hashedPassword;
-        await newUser.save();
+        newUserDoc.password = hashedPassword;
+        await newUserDoc.save();
         
-        resp.send({
+        resp.status(201).send({
             success: true,
             message: "New user created successfully"
         });
     }
     catch(error){
-        console.error(error);
+        resp.status(500).send({
+            success: false,
+            message: `Failed to register user: ${error.message}`
+        });
     }
 });
 
@@ -35,7 +39,7 @@ userRouter.post('/login', async (req, resp) => {
     try{
         const userDoc = await UserModel.findOne({email: req.body.email});
         if(!userDoc){
-            resp.status(400).send({
+            resp.status(404).send({
                 success: false,
                 message: "No such user exists. Please register new user"
             });
@@ -59,18 +63,29 @@ userRouter.post('/login', async (req, resp) => {
         });
     }
     catch(error){
-        console.error(error);
+        resp.status(500).send({
+            success: false,
+            message: `Failed to login user: ${error.message}`
+        });
     }
 });
 
 userRouter.get("/get-valid-user", authMiddleware, async (req, resp)=>{
-    const userId = req.body.userId;
-    const validUserDoc = await UserModel.findById(userId).select('-password');
-    resp.send({
-        success: true,
-        message: "user has been authorized to the page",
-        data: validUserDoc,
-    });
+    try{
+        const userId = req.body.userId;
+        const validUserDoc = await UserModel.findById(userId).select('-password');
+        resp.send({
+            success: true,
+            message: "user has been authorized to the page",
+            data: validUserDoc,
+        });
+    }
+    catch(error){
+        resp.status(500).send({
+            success: false,
+            message: `Failed to authorize user: ${error.message}`
+        });
+    }
 });
 
 module.exports = userRouter;
