@@ -22,11 +22,18 @@ function ProtectedComp({children}){
         }
         validateToken();
     },[user]);
+
+    function logout(){
+        localStorage.removeItem('token');
+        navigate('/login');
+    }
     
     return(
         <>
             {children}
             {user && user.name}
+            <br/>
+            <button onClick={logout} > Logout </button>
         </>
     );
 }

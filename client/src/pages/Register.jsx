@@ -18,7 +18,8 @@ function Register(){
                 navigate('/');
             }
         }
-        validateToken();
+        if(localStorage.getItem('token'))
+            validateToken();
     },[]);
 
     async function registerData(values){
@@ -33,7 +34,7 @@ function Register(){
             setTimeout(()=>{
                 setSpinning(false);
                 navigate("/login");
-            },1500);
+            },1000);
         }
         else{
             messageApi.open({

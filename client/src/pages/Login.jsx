@@ -18,7 +18,8 @@ function Login(){
                 navigate('/');
             }
         }
-        validateToken();
+        if(localStorage.getItem('token'))
+            validateToken();
     },[]);
 
     async function login(values){
@@ -34,7 +35,7 @@ function Login(){
             setTimeout(()=>{
                 setSpinning(false);
                 navigate("/");
-            },1500);
+            },1000);
         }
         else{
             messageApi.open({

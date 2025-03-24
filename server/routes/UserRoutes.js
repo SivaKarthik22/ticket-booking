@@ -14,6 +14,7 @@ userRouter.post('/register', async (req, resp)=>{
                 success: false,
                 message: "The user already exists!"
             });
+            return;
         }
 
         const newUserDoc = new UserModel(req.body);
@@ -43,6 +44,7 @@ userRouter.post('/login', async (req, resp) => {
                 success: false,
                 message: "No such user exists. Please register new user"
             });
+            return;
         }
 
         const authenticate = await bcrypt.compare(req.body.password, userDoc.password); //verify if user entered password is correct
@@ -52,6 +54,7 @@ userRouter.post('/login', async (req, resp) => {
                 success: false,
                 message: "Password is incorrect"
             });
+            return;
         }
 
         const jwtToken = jwt.sign({userId: userDoc._id}, 'this_is_my_show', {expiresIn: '2d'});
