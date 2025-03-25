@@ -2,6 +2,7 @@
     --highlight: #f84464;
     --light-grey: #f5f5f5;
     --line-grey: #d9d9d9;
+    --grey: #999999;
 }
 .highlight, .highlight:hover{
     background-color: var(--highlight);
@@ -44,4 +45,21 @@
 }
 .form-input{
     padding: 7px;
+}
+
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.content{
+    background-color: white;
+}
+.grey-bg{
+    background-color: var(--light-grey);
+}
+.nav-menu{
+    flex: 1;
+    min-width: 0; 
+    justify-content: flex-end;
 }

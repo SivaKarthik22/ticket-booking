@@ -4,7 +4,8 @@ import { authorizeUser } from "../user service/users";
 import { useDispatch, useSelector } from "react-redux";
 import UserSlice from "../redux/UserSlice";
 import { Layout, Menu } from "antd";
-import SmileTwoTone from '@ant-design/icons';
+import { UserOutlined } from '@ant-design/icons';
+import '../styles/component-styles.css'
 
 function ProtectedComp({children}){
     const navigate = useNavigate();
@@ -33,13 +34,12 @@ function ProtectedComp({children}){
     }
 
     const navItems = [
-        {label: "Home",},
-    ];
-
-    const profileItems = [
+        {label: "Home", key: 1},
+        {label: "Menu2", key: 2},
         {
-            label: `Hi ${user ? user.name : "guest"}`,
-            icon: <SmileTwoTone twoToneColor="#f84464" />,
+            label: `Hi, ${user ? user.name : "guest"}`,
+            icon: <UserOutlined style={{fontSize:"16px", color:"#f84464"}} />,
+            key: 3,
             children: [
                 {label: "Edit Profile"},
                 {label: (
@@ -54,22 +54,17 @@ function ProtectedComp({children}){
     return(
         <>
             <Layout>
-                <Layout.Header style={{display:'flex', alignItems:'center'}}>
-                    <h3>My Day My Show</h3>
+                <Layout.Header className="header grey-bg">
+                    <div> <img src="../assets/MyDayMyShowlogo.png" /> </div>
                     <Menu 
                         mode="horizontal"
-                        theme="dark"
+                        theme="light"
                         items={navItems}
-                        style={{ flex: 1, minWidth: 0 }}
-                    ></Menu>
-                    <Menu 
-                        mode="horizontal"
-                        theme="dark"
-                        items={profileItems}
-                        style={{ flex: 1, minWidth: 0 }}
+                        defaultSelectedKeys={['1']}
+                        className="nav-menu grey-bg"
                     ></Menu>
                 </Layout.Header>
-                <Layout.Content>
+                <Layout.Content className="content">
                     {children}
                     {user && user.name}
                 </Layout.Content>
