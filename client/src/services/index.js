@@ -6,3 +6,10 @@ export const userAxiosInstance = axios.create({
         'Content-Type': 'application/json',
     },
 });
+
+export const movieAxiosInstance = axios.create({
+    baseURL: "/api/movies/",
+    headers : {
+        'Content-Type': 'application/json',
+    },
+});

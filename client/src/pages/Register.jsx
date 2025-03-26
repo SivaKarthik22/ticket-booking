@@ -1,9 +1,8 @@
 import { Form, Input, Button, message, Spin } from "antd";
 import '../styles/component-styles.css';
 import {Link, useNavigate} from 'react-router-dom';
-import { registerUser } from "../user service/users";
+import { registerUser, authorizeUser } from "../services/userServices";
 import { useState, useEffect} from "react";
-import { authorizeUser } from "../user service/users";
 
 function Register(){
     const [messageApi, contextHolder] = message.useMessage();

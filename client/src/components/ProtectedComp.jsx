@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { authorizeUser } from "../user service/users";
+import { Link, useNavigate } from "react-router-dom";
+import { authorizeUser } from "../services/userServices";
 import { useDispatch, useSelector } from "react-redux";
 import UserSlice from "../redux/UserSlice";
 import { Layout, Menu } from "antd";
@@ -34,19 +34,18 @@ function ProtectedComp({children}){
     }
 
     const navItems = [
-        {label: "Home", key: 1},
+        {
+            label: <Link to="/">Home</Link>,
+            key: 1,
+        },
         {label: "Menu2", key: 2},
         {
             label: `Hi, ${user ? user.name : "guest"}`,
             icon: <UserOutlined style={{fontSize:"16px", color:"#f84464"}} />,
             key: 3,
             children: [
-                {label: "Edit Profile"},
-                {label: (
-                    <span onClick={logout}>
-                        Sign out
-                    </span>
-                )},
+                {label: "My Profile"},
+                {label: <span onClick={logout}>Sign out</span> },
             ],
         },
     ];
@@ -55,7 +54,12 @@ function ProtectedComp({children}){
         <>
             <Layout>
                 <Layout.Header className="header white-bg" >
-                    <img width="150" src="/MyDayMyShow_logo.png" />
+                    <img 
+                        width="140"
+                        src="/MyDayMyShow_logo.png"
+                        onClick={ ()=>{navigate('/')} }
+                        className="cursor-pointer"
+                    />
                     <Menu 
                         mode="horizontal"
                         theme="light"
@@ -67,7 +71,6 @@ function ProtectedComp({children}){
                 </Layout.Header>
                 <Layout.Content className="white-bg content">
                     {children}
-                    {user && user.name}
                 </Layout.Content>
             </Layout>
         </>
