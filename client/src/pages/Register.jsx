@@ -59,7 +59,7 @@ function Register(){
             <Form
                 form={form}
                 layout="vertical"
-                className="form-container"
+                className="form-container white-bg"
                 onFinish={registerData}
             >
                 <h2 className="form-heading">
@@ -97,7 +97,7 @@ function Register(){
                 </Form.Item>
 
                 <Form.Item label={null}>
-                    <Button className="button1 highlight login-btn" type="primary" htmlType="submit" >
+                    <Button className="button1 login-btn" type="primary" htmlType="submit" >
                         Register
                     </Button>
                 </Form.Item>

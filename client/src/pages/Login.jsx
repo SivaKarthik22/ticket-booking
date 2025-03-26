@@ -61,7 +61,7 @@ function Login(){
                 form={form}
                 onFinish={login}
                 layout="vertical"
-                className="form-container"
+                className="form-container white-bg"
             >
                 <h2 className="form-heading">
                     User Login
@@ -88,7 +88,7 @@ function Login(){
                 </Form.Item>
 
                 <Form.Item label={null}>
-                    <Button className="button1 highlight login-btn" type="primary" htmlType="submit" >
+                    <Button className="button1 login-btn" type="primary" htmlType="submit" >
                         Login
                     </Button>
                 </Form.Item>

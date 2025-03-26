@@ -54,17 +54,18 @@ function ProtectedComp({children}){
     return(
         <>
             <Layout>
-                <Layout.Header className="header grey-bg">
-                    <div> <img src="../assets/MyDayMyShowlogo.png" /> </div>
+                <Layout.Header className="header white-bg" >
+                    <img width="150" src="/MyDayMyShow_logo.png" />
                     <Menu 
                         mode="horizontal"
                         theme="light"
                         items={navItems}
                         defaultSelectedKeys={['1']}
-                        className="nav-menu grey-bg"
+                        className="nav-menu white-bg"
+                        color="danger"
                     ></Menu>
                 </Layout.Header>
-                <Layout.Content className="content">
+                <Layout.Content className="white-bg content">
                     {children}
                     {user && user.name}
                 </Layout.Content>
