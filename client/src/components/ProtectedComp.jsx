@@ -66,7 +66,6 @@ function ProtectedComp({children}){
                         items={navItems}
                         defaultSelectedKeys={['1']}
                         className="nav-menu white-bg"
-                        color="danger"
                     ></Menu>
                 </Layout.Header>
                 <Layout.Content className="white-bg content">
