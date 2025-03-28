@@ -10,7 +10,7 @@ function authMiddleware(req, resp, next){
     catch(error){
         resp.status(401).send({
             success: false,
-            message:"Invalid token",
+            message:"Token is Invalid",
         });
     }
 }

@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchAllMovies } from "../services/movieServices";
 
-export const getAllMovies = createAsyncThunk('createSlice/getAllMovies', ()=>{
+export const getAllMovies = createAsyncThunk('movieSlice/getAllMovies', ()=>{
     return new Promise((resolve, reject)=>{
         fetchAllMovies()
-        .then(responseData => {resolve(responseData)} )
+        .then(responseData => {resolve(responseData.data)} )
         .catch(reject);
     });
 });
@@ -24,17 +24,16 @@ const MovieSlice = createSlice({
     extraReducers: function (builder) {
         builder.addCase(getAllMovies.pending, (state)=>{
             state.isLoading = true;
-            //console.log("loading");
         });
         builder.addCase(getAllMovies.fulfilled, (state, action)=>{
             state.isLoading = false;
-            state.movies = action.payload.data;
-            //console.log(action.payload);
+            state.movies = action.payload;
+            state.errorMsg = null;
         });
         builder.addCase(getAllMovies.rejected, (state, action)=>{
             state.isLoading = false;
             state.errorMsg = action.error.message;
-            //console.log("rejected");
+            state.movies = [];
         });
     }
 });

@@ -20,7 +20,7 @@ export async function loginUser(values){
     }
 }
 
-export async function authorizeUser(){
+/*export async function authorizeUser(){
     try{
         const response = await userAxiosInstance.get("/get-valid-user", {
             headers: {'authorization': `Bearer ${localStorage.getItem('token')}` }
@@ -30,4 +30,14 @@ export async function authorizeUser(){
     catch(error){
         return error.response.data;
     }
+}*/
+
+export function authorizeUser(){
+    return new Promise((resolve, reject)=>{
+        userAxiosInstance.get("/get-valid-user", {
+            headers: {'authorization': `Bearer ${localStorage.getItem('token')}` }
+        })
+        .then(response => {resolve(response.data)} )
+        .catch(error => {reject(error.response.data)} );
+    });
 }

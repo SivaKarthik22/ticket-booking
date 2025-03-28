@@ -74,10 +74,15 @@
 .cursor-pointer{
     cursor: pointer;
 }
-.home-container{
-    margin: 30px auto;
+.content-container{
+    margin: 40px auto;
     max-width: 1200px;
 }
 .movie-card{
     width: 200px;
+}
+.movie-loading-card{
+    width: 200px;
+    height: 380px;
+    background-color: var(--light-grey);
 }

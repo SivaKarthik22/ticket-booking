@@ -15,6 +15,6 @@ export function fetchAllMovies(){
     return new Promise((resolve, reject)=>{
         movieAxiosInstance.get('/get-all-movies')
         .then(response => {resolve(response.data)} )
-        .catch(reject);
+        .catch(error => {reject(error.response.data)} );
     });
 }
