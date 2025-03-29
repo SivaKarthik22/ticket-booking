@@ -1,12 +1,10 @@
-import { Tabs } from "antd";
-import { useEffect } from "react";
+import { Button, Tabs } from "antd";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import AccessDeny from "../AccessDeny";
 
 
 function AdminPage(){
     const {user} = useSelector(store=> store.user);
-    const navigate = useNavigate();
 
     const tabItems = [
         {
@@ -26,10 +24,9 @@ function AdminPage(){
         },
     ];
 
-    useEffect(()=>{
-        if(!user)
-            navigate('/');
-    },[user]);
+    if(!user || user.role != "admin"){
+        return <AccessDeny/> ;
+    }
 
     return(
         <>
