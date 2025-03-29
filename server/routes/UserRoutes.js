@@ -46,6 +46,13 @@ userRouter.post('/login', async (req, resp) => {
             });
             return;
         }
+        if(userDoc.role != req.body.role){
+            resp.status(400).send({
+                success: false,
+                message: `Not a valid ${req.body.role}`,
+            });
+            return;
+        }
 
         const authenticate = await bcrypt.compare(req.body.password, userDoc.password); //verify if user entered password is correct
 

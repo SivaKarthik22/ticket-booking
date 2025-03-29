@@ -29,8 +29,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-color: var(--light-grey);
 }
 .form-container{
     width: 25%;
@@ -38,6 +36,10 @@
     padding: 40px;
     border-radius: 6px;
     min-width: 380px;
+    background-color: var(--line-grey);
+    transform: translate(0,-50%);
+    top: 50%;
+    position: absolute;
 }
 .form-heading{
     text-align: center;
@@ -54,17 +56,20 @@
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.06);
     z-index: 1;
     overflow: hidden;
-
 }
 .content{
     z-index: 0;
     padding: 0 50px;
+    padding-bottom: 80px;
 }
 .white-bg{
     background-color: white;
 }
 .grey-bg{
     background-color: var(--light-grey);
+}
+.dark-grey-bg{
+    background-color: var(--line-grey);
 }
 .nav-menu{
     flex: 1;
@@ -76,6 +81,11 @@
 }
 .content-container{
     margin: 40px auto;
+    max-width: 1200px;
+}
+.footer-container{
+    margin: 20px auto;
+    margin-bottom: 10px;
     max-width: 1200px;
 }
 .movie-card{
