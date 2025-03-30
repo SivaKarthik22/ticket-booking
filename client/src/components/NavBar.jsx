@@ -5,7 +5,7 @@ import UserSlice from "../redux/UserSlice";
 import { UserOutlined } from '@ant-design/icons';
 import '../styles/component-styles.css'
 
-function NavBar({mode}){
+function NavBar({mode, defaultKey}){
     const {user} = useSelector(store=> store.user);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -72,7 +72,7 @@ function NavBar({mode}){
                     mode="horizontal"
                     theme="light"
                     items={navItems()}
-                    defaultSelectedKeys={['1']}
+                    defaultSelectedKeys={[defaultKey]}
                     className="nav-menu white-bg"
                 ></Menu>) :
                 (<Flex gap="small">

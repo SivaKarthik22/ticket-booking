@@ -72,7 +72,7 @@ function Register(){
                         className="form-container grey-bg"
                     >
                         <h2 className="form-heading">
-                            Register {role.charAt(0).toUpperCase() + role.slice(1)}
+                            Register new {role.charAt(0).toUpperCase() + role.slice(1)}
                         </h2>
                         
                         <Form.Item

@@ -1,20 +1,12 @@
 const mongoose = require('mongoose');
 
 const movieSchema = new mongoose.Schema({
+    poster:{
+        type: String,
+        required: true,
+    },
     title:{
         type: String,
-        required: true,
-    },
-    description:{
-        type: String,
-        required: true,
-    },
-    genre:{
-        type: String,
-        required: true,
-    },
-    duration:{
-        type: Number,
         required: true,
     },
     language:{
@@ -25,7 +17,15 @@ const movieSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
-    poster:{
+    duration:{
+        type: Number,
+        required: true,
+    },
+    genre:{
+        type: String,
+        required: true,
+    },
+    description:{
         type: String,
         required: true,
     },

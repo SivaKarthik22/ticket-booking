@@ -17,17 +17,18 @@ function App() {
           colorPrimary: "#f84464",
           colorPrimaryHover: "#ff496b",
           //colorBgContainer: "#f5f5f5",
+          //defaultBorderColor: "#f84464"
         },
       }}
     >
       <Routes>
         <Route path='/register/:role' element={<Register/>}></Route>
         <Route path='/login/:role' element={<Login/>}></Route>
-        <Route path='/' element={<ProtectedComp> <Home/> </ProtectedComp>}></Route>
-        <Route path='/customer-profile' element={<ProtectedComp> <CustomerProfile/> </ProtectedComp>}></Route>
-        <Route path='/admin-profile' element={<ProtectedComp> <AdminProfile/> </ProtectedComp>}></Route>
-        <Route path='/partner-profile' element={<ProtectedComp> <PartnerProfile/> </ProtectedComp>}></Route>
-        <Route path='/admin-page' element={<ProtectedComp> <AdminPage/> </ProtectedComp>}></Route>
+        <Route path='/' element={<ProtectedComp defaultKey="1"> <Home/> </ProtectedComp>}></Route>
+        <Route path='/customer-profile' element={<ProtectedComp defaultKey="3"> <CustomerProfile/> </ProtectedComp>}></Route>
+        <Route path='/admin-profile' element={<ProtectedComp defaultKey="3"> <AdminProfile/> </ProtectedComp>}></Route>
+        <Route path='/partner-profile' element={<ProtectedComp defaultKey="3"> <PartnerProfile/> </ProtectedComp>}></Route>
+        <Route path='/admin-page' element={<ProtectedComp defaultKey="2"> <AdminPage/> </ProtectedComp>}></Route>
       </Routes>
     </ConfigProvider>
   )

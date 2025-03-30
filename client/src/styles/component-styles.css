@@ -14,6 +14,9 @@
 .button1{
     padding: 20px;
 }
+.button2{
+    padding: 20px 30px;
+}
 .button1:hover{
     outline: 3px solid var(--line-grey);
 }
@@ -60,7 +63,7 @@
 .content{
     z-index: 0;
     padding: 0 50px;
-    padding-bottom: 80px;
+    padding-bottom: 200px;
 }
 .white-bg{
     background-color: white;
@@ -83,6 +86,16 @@
     margin: 40px auto;
     max-width: 1200px;
 }
+.layout{
+    position: relative;
+    min-height: 100vh;
+}
+.footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    min-height: 110px;
+}
 .footer-container{
     margin: 20px auto;
     margin-bottom: 10px;
@@ -95,4 +108,10 @@
     width: 200px;
     height: 380px;
     background-color: var(--light-grey);
+}
+.form-button-icon{
+    font-size: 18px;
+}
+.icon-button{
+    padding: 20px 12px;
 }

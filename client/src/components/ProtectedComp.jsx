@@ -7,7 +7,7 @@ import { getUser } from "../redux/UserSlice";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 
-function ProtectedComp({children}){
+function ProtectedComp({children, defaultKey}){
     const dispatch = useDispatch();
     const setUser = UserSlice.actions.setUser;
 
@@ -20,8 +20,8 @@ function ProtectedComp({children}){
     
     return(
         <>
-            <Layout>
-                <NavBar mode="page" />
+            <Layout className="layout">
+                <NavBar mode="page" defaultKey={defaultKey} />
                 <Layout.Content className="white-bg content">
                     <div className="content-container">
                         {children}
