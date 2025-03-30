@@ -62,7 +62,7 @@ function MovieTable(){
                 columns={columns}
                 dataSource={rows}
                 expandable={{
-                    expandedRowRender: record => <p style={{ margin: 0 }}>{record.description}</p>
+                    expandedRowRender: record => <p><span style={{fontWeight:"bold"}}>Description:  </span>{record.description}</p>
                 }}
                 pagination={{
                     pageSize: 5,

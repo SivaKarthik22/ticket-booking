@@ -8,6 +8,7 @@ import CustomerProfile from './components/Customer/CustomerProfile';
 import AdminProfile from './components/Admin/AdminProfile';
 import PartnerProfile from './components/Partner/PartnerProfile';
 import AdminPage from './components/Admin/AdminPage';
+import './styles/component-styles.css'
 
 function App() {
   return (

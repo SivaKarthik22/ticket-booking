@@ -15,6 +15,9 @@
     padding: 20px;
 }
 .button2{
+    padding: 18px;
+}
+.button3{
     padding: 20px 30px;
 }
 .button1:hover{
@@ -114,4 +117,7 @@
 }
 .icon-button{
     padding: 20px 12px;
+}
+.width-full{
+    width: 100%;
 }
