@@ -64,8 +64,8 @@ function NavBar({mode, defaultKey}){
             <img 
                 width="130"
                 src="/MyDayMyShow_logo.png"
-                onClick={ ()=>{navigate('/')} }
-                className="cursor-pointer"
+                //onClick={ ()=>{navigate('/')} }
+                //className="cursor-pointer"
             />
             {(mode == "page") && (user ? 
                 (<Menu 

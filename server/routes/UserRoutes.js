@@ -10,17 +10,13 @@ userRouter.post('/register', async (req, resp)=>{
     try{
         const existingUserDoc = await UserModel.findOne({email: req.body.email});
         if(existingUserDoc){
-            resp.status(400).send({
+            return resp.status(400).send({
                 success: false,
                 message: "The user already exists!"
             });
-            return;
         }
 
         const newUserDoc = new UserModel(req.body);
-        const salt = await bcrypt.genSalt(10); //generates a new salt 
-        const hashedPassword = bcrypt.hashSync(req.body.password, salt); //adds the salt to the password and hashes it
-        newUserDoc.password = hashedPassword;
         await newUserDoc.save();
         
         resp.status(201).send({
@@ -40,28 +36,25 @@ userRouter.post('/login', async (req, resp) => {
     try{
         const userDoc = await UserModel.findOne({email: req.body.email});
         if(!userDoc){
-            resp.status(404).send({
+            return resp.status(404).send({
                 success: false,
                 message: "No such user exists. Please register new user"
             });
-            return;
         }
         if(userDoc.role != req.body.role){
-            resp.status(400).send({
+            return resp.status(400).send({
                 success: false,
                 message: `Not a valid ${req.body.role}`,
             });
-            return;
         }
 
         const authenticate = await bcrypt.compare(req.body.password, userDoc.password); //verify if user entered password is correct
 
         if(!authenticate){
-            resp.status(401).send({
+            return resp.status(401).send({
                 success: false,
                 message: "Password is incorrect"
             });
-            return;
         }
 
         const jwtToken = jwt.sign({userId: userDoc._id}, 'this_is_my_show', {expiresIn: '2d'});

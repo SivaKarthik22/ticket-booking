@@ -30,9 +30,19 @@ function Register(){
     },[user]);
 
     async function registerData(values){
+        if(!values.email.includes('@')){
+            messageApi.open({
+                type: 'warning',
+                content: "Enter a valid e-mail",
+            });
+            return;
+        }
+
         let roleName = (role == "user") ? "customer" : role;
         const credentials = {...values, role: roleName};
+
         const responseData = await registerUser(credentials);
+        
         if(responseData.success){
             messageApi.open({
                 type: 'success',

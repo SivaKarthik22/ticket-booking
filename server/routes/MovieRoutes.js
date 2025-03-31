@@ -40,20 +40,18 @@ movieRouter.get('/get-all-movies', async (req, resp)=>{
 movieRouter.put('/update-movie', async (req, resp)=>{
     try{
         if(req.body._id.toString().length != 24){
-            resp.status(400).send({
+            return resp.status(400).send({
                 success: false,
                 message: "Invalid id",
-            });
-            return; //server gets crashed if I don't add this return statement here, to handle this error
+            });  //server gets crashed if I don't add this return statement here
         }
 
         const movieDoc = await MovieModel.findByIdAndUpdate(req.body._id, req.body, {new: true});
         if(!movieDoc){
-            resp.status(404).send({
+            return resp.status(404).send({
                 success: false,
                 message: "No such movie exists",
-            });
-            return; //server gets crashed if I don't add this return statement here, to handle this error
+            }); //server gets crashed if I don't add this return statement here
         }
 
         resp.send({
@@ -73,20 +71,18 @@ movieRouter.put('/update-movie', async (req, resp)=>{
 movieRouter.get('/movie/:id', async (req, resp)=>{
     try{
         if(req.params.id.toString().length != 24){
-            resp.status(400).send({
+            return resp.status(400).send({
                 success: false,
                 message: "Invalid id",
             });
-            return;
         }
         
         const movieDoc = await MovieModel.findById(req.params.id);
         if(!movieDoc){
-            resp.status(404).send({
+            return resp.status(404).send({
                 success: false,
                 message: "No such movie exists",
             });
-            return;
         }
 
         resp.send({
@@ -106,20 +102,18 @@ movieRouter.get('/movie/:id', async (req, resp)=>{
 movieRouter.delete('/delete-movie/:id', async (req, resp)=>{
     try{
         if(req.params.id.toString().length != 24){
-            resp.status(400).send({
+            return resp.status(400).send({
                 success: false,
                 message: "Invalid id",
             });
-            return;
         }
 
         const deletedMovieDoc = await MovieModel.findByIdAndDelete(req.params.id);
         if(!deletedMovieDoc){
-            resp.status(404).send({
+            return resp.status(404).send({
                 success: false,
                 message: "No such movie exists",
             });
-            return;
         }
 
         resp.send({

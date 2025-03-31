@@ -11,7 +11,7 @@ function Footer(){
     return(
         <Layout.Footer className="footer dark-grey-bg" >
             <div className="footer-container">
-                {(!user || user.role == "customer") && (
+                {!user && (
                     <Flex gap="middle" align="center">
                         <p>List your shows on My Day My Show:</p>
                         <Button onClick={()=>{navigate('/register/partner')}}>
