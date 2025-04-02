@@ -1,4 +1,4 @@
-import { Button, Tabs, Flex, Spin, Form } from "antd";
+import { Button, Tabs, Flex, Spin, Form, message } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import AccessDeny from "../AccessDeny";
 import MovieTable from "./MovieTable";
@@ -6,13 +6,16 @@ import { useEffect, useState } from "react";
 import { getAllMovies } from "../../redux/MovieSlice";
 import { PlusOutlined } from "@ant-design/icons";
 import MovieFormModal from "./MovieFormModal";
+import { postMovie } from "../../services/movieServices";
 
 
 function AdminPage(){
+    const [messageApi, contextHolder] = message.useMessage();
     const {user, userLoading} = useSelector(store=> store.user);
     const dispatch = useDispatch();
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [form] = Form.useForm();
+    const [formIsLoading, setFormIsLoading] = useState(false);
 
     useEffect(()=>{
         dispatch(getAllMovies());
@@ -25,9 +28,26 @@ function AdminPage(){
     function openModal(){
         setModalIsOpen(true);
     }
-    function createMovie(values){
-        setModalIsOpen(false);
-        form.resetFields();
+    async function createMovie(values){
+        setFormIsLoading(true);
+        const responseData = await postMovie(values);
+        setFormIsLoading(false);
+        
+        if(responseData.success){
+            setModalIsOpen(false);
+            form.resetFields();
+            messageApi.open({
+                type: 'success',
+                content: responseData.message,
+            });
+            dispatch(getAllMovies());
+        }
+        else{
+            messageApi.open({
+                type: 'warning',
+                content: `${responseData.message}. Please try again`,
+            });
+        }
     }
 
     const tabItems = [
@@ -40,10 +60,11 @@ function AdminPage(){
                     createMovie={createMovie}
                     form={form}
                     modalIsOpen={modalIsOpen}
+                    formIsLoading={formIsLoading}
                 />
                 <Flex justify="end" style={{padding:"10px 20px 20px 20px"}}>
-                    <Button className="button1" type="primary" onClick={openModal}>
-                    <PlusOutlined style={{fontSize:"16px"}}/> Add Movie
+                    <Button className="button1" type="primary" icon={<PlusOutlined />} onClick={openModal}>
+                        Add Movie
                     </Button>
                 </Flex>
                 <MovieTable/>
@@ -69,6 +90,7 @@ function AdminPage(){
     }
     return(
         <>
+            {contextHolder}
             <Tabs defaultActiveKey="1" items={tabItems} />
         </>
     );

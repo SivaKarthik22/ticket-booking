@@ -18,3 +18,13 @@ export function fetchAllMovies(){
         .catch(error => {reject(error.response.data)} );
     });
 }
+
+export async function postMovie(values){
+    try{
+        const response = await movieAxiosInstance.post("/add-movie", values)
+        return response.data;
+    }
+    catch(error){
+        return error.response.data;
+    }
+}

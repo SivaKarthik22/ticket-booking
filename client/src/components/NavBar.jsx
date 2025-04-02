@@ -12,7 +12,7 @@ function NavBar({mode, defaultKey}){
     const setUser = UserSlice.actions.setUser;
 
     const userNavItem = {
-        label: `Hi, ${user ? user.name : "guest"}`,
+        label: `Hi, ${user ? user.name.split(" ")[0] : "guest"}`,
         icon: <UserOutlined style={{fontSize:"16px", color:"#f84464"}} />,
         key: 3,
         children: [

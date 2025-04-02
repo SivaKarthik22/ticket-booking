@@ -50,7 +50,7 @@ function MovieTable(){
         }
     ];
     const rows = movies.map((movie) => { 
-        return {...movie, key: `movie_${movie._Id}`};
+        return {...movie, key: `movie_${movie._id}`};
     });
 
     if(isLoading){
