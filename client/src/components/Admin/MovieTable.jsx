@@ -49,8 +49,8 @@ function MovieTable(){
             </Flex>),
         }
     ];
-    const rows = movies.map((movie, idx) => { 
-        return {...movie, key: idx+1};
+    const rows = movies.map((movie) => { 
+        return {...movie, key: `movie_${movie._Id}`};
     });
 
     if(isLoading){
