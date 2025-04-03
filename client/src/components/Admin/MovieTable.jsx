@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { EditTwoTone, DeleteTwoTone } from "@ant-design/icons";
 import moment from 'moment';
 
-function MovieTable({openEditingForm}){
+function MovieTable({openEditingForm, openDeleteModal}){
     const {movies, isLoading} = useSelector(store => store.movies);
 
     const columns = [
@@ -49,7 +49,7 @@ function MovieTable({openEditingForm}){
                     <Button className="icon-button" onClick={()=>{ openEditingForm(record) }}>
                         <EditTwoTone className="form-button-icon" twoToneColor="#f8447a"/>
                     </Button>
-                    <Button className="icon-button">
+                    <Button className="icon-button" onClick={()=>{ openDeleteModal(record) }}>
                         <DeleteTwoTone className="form-button-icon" twoToneColor="#f8447a"/>
                     </Button>
                 </Flex>

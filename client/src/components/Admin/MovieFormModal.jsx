@@ -1,6 +1,6 @@
-import { Button, Flex, Modal, Form, Input, InputNumber, Select, DatePicker, Spin } from "antd";
-import { useEffect } from "react";
+import { Button, Flex, Modal, Form, Input, InputNumber, Select, Spin } from "antd";
 import moment from 'moment';
+import { useEffect } from "react";
 
 function MovieFormModal({closeModal, submitMovieForm, form, modalIsOpen, formIsLoading, formType, curMovie}){
 
@@ -8,6 +8,13 @@ function MovieFormModal({closeModal, submitMovieForm, form, modalIsOpen, formIsL
 
     if(curMovie)
         curMovie.releaseDate = moment(curMovie.releaseDate).format("YYYY-MM-DD");
+
+    useEffect(() => {
+        if(curMovie)
+            form.setFieldsValue(curMovie);
+        else
+            form.resetFields();
+    }, [curMovie]);
 
     return(
         <Modal
@@ -22,7 +29,7 @@ function MovieFormModal({closeModal, submitMovieForm, form, modalIsOpen, formIsL
                     layout="vertical"
                     form={form}
                     onFinish={submitMovieForm}
-                    initialValues={curMovie}
+                    //initialValues={curMovie}
                 >
                     <Form.Item label="Movie Name" name="title"
                         rules={[formRulesObj]}

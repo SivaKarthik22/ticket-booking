@@ -7,6 +7,7 @@ import { getAllMovies } from "../../redux/MovieSlice";
 import { PlusOutlined } from "@ant-design/icons";
 import MovieFormModal from "./MovieFormModal";
 import { postMovie, putMovie } from "../../services/movieServices";
+import DeleteMovieModal from "./DeleteMovieModal";
 
 
 function AdminPage(){
@@ -18,26 +19,36 @@ function AdminPage(){
     const [formIsLoading, setFormIsLoading] = useState(false);
     const [formType, setFormType] = useState("create");
     const [curMovie, setCurMovie] = useState(null);
+    const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+    const [deleteModalIsLoading, setDeleteModalIsLoading] = useState(false);
 
     useEffect(()=>{
         dispatch(getAllMovies());
     },[]);
 
     function closeModal(){
-        setCurMovie(null);
         setModalIsOpen(false);
-        form.resetFields();
-        setFormType("create");
+        setCurMovie(null);
     }
     function openNewForm(){
-        setCurMovie(null);
-        setFormType("create");
         setModalIsOpen(true);
+        setFormType("create");
     }
     function openEditingForm(movieObj){
+        setModalIsOpen(true);
         setCurMovie(movieObj);
         setFormType("edit");
-        setModalIsOpen(true);
+    }
+    function openDeleteModal(movieObj){
+        setCurMovie(movieObj);
+        setDeleteModalIsOpen(true);
+    }
+    function closeDeleteModal(){
+        setDeleteModalIsOpen(false);
+        setCurMovie(null);
+    }
+    function deleteRecord(movieObj){
+
     }
     async function submitMovieForm(values){
         setFormIsLoading(true);
@@ -50,13 +61,11 @@ function AdminPage(){
         
         if(responseData.success){
             setModalIsOpen(false);
-            form.resetFields();
             messageApi.open({
                 type: 'success',
                 content: responseData.message,
             });
             setCurMovie(null);
-            setFormType("create");
             dispatch(getAllMovies());
         }
         else{
@@ -81,12 +90,19 @@ function AdminPage(){
                     formType={formType}
                     curMovie={curMovie}
                 />
+                <DeleteMovieModal 
+                    closeDeleteModal={closeDeleteModal}
+                    deleteModalIsOpen={deleteModalIsOpen}
+                    deleteModalIsLoading={deleteModalIsLoading}
+                    curMovie={curMovie}
+                    deleteRecord={deleteRecord}
+                />
                 <Flex justify="end" style={{padding:"10px 20px 20px 20px"}}>
                     <Button className="button1" type="primary" icon={<PlusOutlined />} onClick={openNewForm}>
                         Add Movie
                     </Button>
                 </Flex>
-                <MovieTable openEditingForm={openEditingForm} />
+                <MovieTable openEditingForm={openEditingForm} openDeleteModal={openDeleteModal}/>
             </>,
         },
         {
