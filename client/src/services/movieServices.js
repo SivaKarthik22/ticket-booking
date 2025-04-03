@@ -21,7 +21,27 @@ export function fetchAllMovies(){
 
 export async function postMovie(values){
     try{
-        const response = await movieAxiosInstance.post("/add-movie", values)
+        const response = await movieAxiosInstance.post("/add-movie", values);
+        return response.data;
+    }
+    catch(error){
+        return error.response.data;
+    }
+}
+
+export async function putMovie(values){
+    try{
+        const response = await movieAxiosInstance.put("/update-movie", values);
+        return response.data;
+    }
+    catch(error){
+        return error.response.data;
+    }
+}
+
+export async function deleteMovie(values){
+    try{
+        const response = await movieAxiosInstance.delete(`/delete-movie/${values._id}`);
         return response.data;
     }
     catch(error){

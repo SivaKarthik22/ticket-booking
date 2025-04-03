@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { getAllMovies } from "../../redux/MovieSlice";
 import { PlusOutlined } from "@ant-design/icons";
 import MovieFormModal from "./MovieFormModal";
-import { postMovie } from "../../services/movieServices";
+import { postMovie, putMovie } from "../../services/movieServices";
 
 
 function AdminPage(){
@@ -16,21 +16,36 @@ function AdminPage(){
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [form] = Form.useForm();
     const [formIsLoading, setFormIsLoading] = useState(false);
+    const [formType, setFormType] = useState("create");
+    const [curMovie, setCurMovie] = useState(null);
 
     useEffect(()=>{
         dispatch(getAllMovies());
     },[]);
 
     function closeModal(){
+        setCurMovie(null);
         setModalIsOpen(false);
         form.resetFields();
+        setFormType("create");
     }
-    function openModal(){
+    function openNewForm(){
+        setCurMovie(null);
+        setFormType("create");
         setModalIsOpen(true);
     }
-    async function createMovie(values){
+    function openEditingForm(movieObj){
+        setCurMovie(movieObj);
+        setFormType("edit");
+        setModalIsOpen(true);
+    }
+    async function submitMovieForm(values){
         setFormIsLoading(true);
-        const responseData = await postMovie(values);
+        let responseData;
+        if(formType == "edit")
+            responseData = await putMovie({...values, _id : curMovie._id});
+        else
+            responseData = await postMovie(values);
         setFormIsLoading(false);
         
         if(responseData.success){
@@ -40,6 +55,8 @@ function AdminPage(){
                 type: 'success',
                 content: responseData.message,
             });
+            setCurMovie(null);
+            setFormType("create");
             dispatch(getAllMovies());
         }
         else{
@@ -57,17 +74,19 @@ function AdminPage(){
             children: <>
                 <MovieFormModal
                     closeModal={closeModal}
-                    createMovie={createMovie}
+                    submitMovieForm={submitMovieForm}
                     form={form}
                     modalIsOpen={modalIsOpen}
                     formIsLoading={formIsLoading}
+                    formType={formType}
+                    curMovie={curMovie}
                 />
                 <Flex justify="end" style={{padding:"10px 20px 20px 20px"}}>
-                    <Button className="button1" type="primary" icon={<PlusOutlined />} onClick={openModal}>
+                    <Button className="button1" type="primary" icon={<PlusOutlined />} onClick={openNewForm}>
                         Add Movie
                     </Button>
                 </Flex>
-                <MovieTable/>
+                <MovieTable openEditingForm={openEditingForm} />
             </>,
         },
         {

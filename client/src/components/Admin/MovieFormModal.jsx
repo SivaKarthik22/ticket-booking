@@ -1,12 +1,17 @@
 import { Button, Flex, Modal, Form, Input, InputNumber, Select, DatePicker, Spin } from "antd";
+import { useEffect } from "react";
+import moment from 'moment';
 
-function MovieFormModal({closeModal, createMovie, form, modalIsOpen, formIsLoading}){
+function MovieFormModal({closeModal, submitMovieForm, form, modalIsOpen, formIsLoading, formType, curMovie}){
 
     const formRulesObj = {required: true, message: <span style={{fontSize:"12px"}}>Required field</span> };
 
+    if(curMovie)
+        curMovie.releaseDate = moment(curMovie.releaseDate).format("YYYY-MM-DD");
+
     return(
         <Modal
-            title="Add New Movie"
+            title={formType == "edit" ? "Edit Movie" : "Add New Movie"}
             open={modalIsOpen}
             onCancel={closeModal}
             footer=""
@@ -16,7 +21,8 @@ function MovieFormModal({closeModal, createMovie, form, modalIsOpen, formIsLoadi
                 <Form
                     layout="vertical"
                     form={form}
-                    onFinish={createMovie}
+                    onFinish={submitMovieForm}
+                    initialValues={curMovie}
                 >
                     <Form.Item label="Movie Name" name="title"
                         rules={[formRulesObj]}
@@ -45,7 +51,7 @@ function MovieFormModal({closeModal, createMovie, form, modalIsOpen, formIsLoadi
                         </Form.Item>
                         <Form.Item label="Release Date" name="releaseDate"
                             rules={[formRulesObj]} style={{flex:1}}
-                        ><DatePicker className="width-full"/>
+                        ><Input type="date" className="width-full"/>
                         </Form.Item>
                     </Flex>
                     <Flex gap="small">

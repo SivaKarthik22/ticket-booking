@@ -1,8 +1,9 @@
 import { Button, Flex, Table, Spin } from "antd";
 import { useSelector } from "react-redux";
 import { EditTwoTone, DeleteTwoTone } from "@ant-design/icons";
+import moment from 'moment';
 
-function MovieTable(){
+function MovieTable({openEditingForm}){
     const {movies, isLoading} = useSelector(store => store.movies);
 
     const columns = [
@@ -26,13 +27,13 @@ function MovieTable(){
             title: "Release Date",
             dataIndex: "releaseDate",
             key: "releaseDate",
-            render: text => text.slice(0,10),
+            render: text => moment(text).format("DD-MMM-YYYY"),
         },
         {
             title: "Duration",
             dataIndex: "duration",
             key: "duration",
-            render: text => `${text} mins`,
+            render: text => `${text} Mins`,
         },
         {
             title: "Genre",
@@ -43,10 +44,16 @@ function MovieTable(){
             title: "Actions",
             dataIndex: "actions",
             key: "actions",
-            render: ()=> (<Flex gap="small">
-                <Button className="icon-button"><EditTwoTone className="form-button-icon" twoToneColor="#f8447a"/></Button>
-                <Button className="icon-button"><DeleteTwoTone className="form-button-icon" twoToneColor="#f8447a"/></Button>
-            </Flex>),
+            render: (text, record)=> (
+                <Flex gap="small">
+                    <Button className="icon-button" onClick={()=>{ openEditingForm(record) }}>
+                        <EditTwoTone className="form-button-icon" twoToneColor="#f8447a"/>
+                    </Button>
+                    <Button className="icon-button">
+                        <DeleteTwoTone className="form-button-icon" twoToneColor="#f8447a"/>
+                    </Button>
+                </Flex>
+            ),
         }
     ];
     const rows = movies.map((movie) => { 
