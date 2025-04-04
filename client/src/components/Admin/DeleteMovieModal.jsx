@@ -1,10 +1,14 @@
-import { Modal, Spin } from "antd";
+import { Flex, Modal, Spin } from "antd";
+import { ExclamationCircleFilled } from "@ant-design/icons";
 
 function DeleteMovieModal({deleteModalIsOpen, closeDeleteModal, deleteModalIsLoading, deleteRecord, curMovie}){
 
     return(
         <Modal
-            title="Delete Movie"
+            title={<Flex align="center" gap="small">
+                <ExclamationCircleFilled style={{color:"orange", fontSize:"18px"}} />
+                Delete Movie
+            </Flex>}
             open={deleteModalIsOpen}
             onCancel={closeDeleteModal}
             onOk={()=>{ deleteRecord(curMovie) }}

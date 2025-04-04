@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { getAllMovies } from "../../redux/MovieSlice";
 import { PlusOutlined } from "@ant-design/icons";
 import MovieFormModal from "./MovieFormModal";
-import { postMovie, putMovie } from "../../services/movieServices";
+import { deleteMovie, postMovie, putMovie } from "../../services/movieServices";
 import DeleteMovieModal from "./DeleteMovieModal";
 
 
@@ -47,8 +47,26 @@ function AdminPage(){
         setDeleteModalIsOpen(false);
         setCurMovie(null);
     }
-    function deleteRecord(movieObj){
-
+    async function deleteRecord(movieObj){
+        setDeleteModalIsLoading(true);
+        const responseData = await deleteMovie(movieObj);
+        setDeleteModalIsLoading(false);
+        
+        if(responseData.success){
+            messageApi.open({
+                type: 'success',
+                content: responseData.message,
+            });
+            dispatch(getAllMovies());
+        }
+        else{
+            messageApi.open({
+                type: 'warning',
+                content: `${responseData.message}. Please try again`,
+            });
+        }
+        setDeleteModalIsOpen(false);
+        setCurMovie(null);
     }
     async function submitMovieForm(values){
         setFormIsLoading(true);
