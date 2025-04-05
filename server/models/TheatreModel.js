@@ -21,6 +21,10 @@ const theatreSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    owner:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user' //name of the collection to which the ObjectId refers to 
+    }
 },
 {timestamps: true});
 

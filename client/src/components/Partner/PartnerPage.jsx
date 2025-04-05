@@ -8,8 +8,8 @@ import TheatreFormModal from "./TheatreFormModal";
 import DeleteTheatreModal from "./DeleteTheatreModal";
 
 function PartnerPage(){
-    const [messageApi, contextHolder] = message.useMessage();
     const {user, userLoading} = useSelector(store => store.user);
+    const [messageApi, contextHolder] = message.useMessage();
     const dispatch = useDispatch();
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [form] = Form.useForm();
@@ -18,6 +18,10 @@ function PartnerPage(){
     const [curTheatre, setCurTheatre] = useState(null);
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
     const [deleteModalIsLoading, setDeleteModalIsLoading] = useState(false);
+
+    /*useEffect(()=>{
+        dispatch(getAllMovies());
+    },[]);*/
 
     function closeModal(){
         setModalIsOpen(false);
@@ -62,12 +66,12 @@ function PartnerPage(){
         setCurMovie(null);*/
     }
     async function submitTheatreForm(values){
-        /*setFormIsLoading(true);
+        setFormIsLoading(true);
         let responseData;
         if(formType == "edit")
-            responseData = await putMovie({...values, _id : curMovie._id});
+            responseData = await putTheatre({...values, _id : curTheatre._id});
         else
-            responseData = await postMovie(values);
+            responseData = await postTheatre({...values, owner: user._id});
         setFormIsLoading(false);
         
         if(responseData.success){
@@ -76,20 +80,16 @@ function PartnerPage(){
                 type: 'success',
                 content: responseData.message,
             });
-            setCurMovie(null);
-            dispatch(getAllMovies());
+            setCurTheatre(null);
+            dispatch(getAllTheatres());
         }
         else{
             messageApi.open({
                 type: 'warning',
                 content: `${responseData.message}. Please try again`,
             });
-        }*/
+        }
     }
-
-    /*useEffect(()=>{
-        dispatch(getAllMovies());
-    },[]);*/
 
     const tabItems = [
         {

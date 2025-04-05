@@ -9,7 +9,6 @@ import MovieFormModal from "./MovieFormModal";
 import { deleteMovie, postMovie, putMovie } from "../../services/movieServices";
 import DeleteMovieModal from "./DeleteMovieModal";
 
-
 function AdminPage(){
     const [messageApi, contextHolder] = message.useMessage();
     const {user, userLoading} = useSelector(store=> store.user);

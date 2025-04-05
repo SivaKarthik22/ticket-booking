@@ -81,4 +81,36 @@ theatreRouter.delete('/delete-theatre/:id', async (req, resp)=>{
     }
 });
 
+theatreRouter.get('/theatres-by-owner/:ownerId', async (req, resp)=>{
+    try{
+        if(req.params.id.toString().length != 24){
+            return resp.status(400).send({
+                success: false,
+                message: "Invalid owner id",
+            });
+        }
+        
+        const theatreDocArray = await TheatreModel.find({owner: req.params.ownerId});
+        if(!theatreDocArray){
+            return resp.status(404).send({
+                success: false,
+                message: "No such owner exists",
+            });
+        }
+
+        resp.send({
+            success: true,
+            message: "All Theatres fetched successfully",
+            data: theatreDocArray,
+        });
+    }
+    catch(error){
+        resp.status(500).send({
+            success: false,
+            message: `Failed to fetch theatres: ${error.message}`
+        });
+    }
+});
+
+
 module.exports = theatreRouter;
