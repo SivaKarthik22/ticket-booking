@@ -81,7 +81,7 @@ theatreRouter.delete('/delete-theatre/:id', async (req, resp)=>{
     }
 });
 
-theatreRouter.get('/theatres-by-owner/:ownerId', async (req, resp)=>{
+theatreRouter.get('/get-theatres-by-owner/:ownerId', async (req, resp)=>{
     try{
         if(req.params.ownerId.toString().length != 24){
             return resp.status(400).send({
@@ -102,6 +102,26 @@ theatreRouter.get('/theatres-by-owner/:ownerId', async (req, resp)=>{
             success: true,
             message: "All Theatres fetched successfully",
             data: theatreDocArray,
+        });
+    }
+    catch(error){
+        resp.status(500).send({
+            success: false,
+            message: `Failed to fetch theatres: ${error.message}`
+        });
+    }
+});
+
+theatreRouter.get('/get-all-theatres', async (req, resp)=>{
+    try{
+        const allTheatreDocsArray = await TheatreModel.find().populate({
+            path: 'owner',
+            select: '-password',
+        });
+        resp.send({
+            success: true,
+            message: "All theatres fetched successfully",
+            data: allTheatreDocsArray,
         });
     }
     catch(error){

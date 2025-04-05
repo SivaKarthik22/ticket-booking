@@ -2,7 +2,15 @@ import { theatreAxiosInstance } from ".";
 
 export async function fetchAllTheatresOfOwner(ownerId){
     return new Promise((resolve, reject)=>{
-        theatreAxiosInstance.get(`/theatres-by-owner/${ownerId}`)
+        theatreAxiosInstance.get(`/get-theatres-by-owner/${ownerId}`)
+        .then(response => {resolve(response.data)} )
+        .catch(error => {reject(error.response.data)} );
+    });
+}
+
+export async function fetchAllTheatres(){
+    return new Promise((resolve, reject)=>{
+        theatreAxiosInstance.get("/get-all-theatres")
         .then(response => {resolve(response.data)} )
         .catch(error => {reject(error.response.data)} );
     });

@@ -1,9 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchAllTheatresOfOwner } from "../services/theatreServices";
+import { fetchAllTheatresOfOwner, fetchAllTheatres } from "../services/theatreServices";
 
 export const getAllTheatresOfOwner = createAsyncThunk('theatreSlice/getAllTheatresOfOwner', (ownerId)=>{
     return new Promise((resolve, reject)=>{
         fetchAllTheatresOfOwner(ownerId)
+        .then(responseData => {resolve(responseData.data)} )
+        .catch(reject);
+    });
+});
+
+export const getAllTheatres = createAsyncThunk('theatreSlice/getAllTheatres', ()=>{
+    return new Promise((resolve, reject)=>{
+        fetchAllTheatres()
         .then(responseData => {resolve(responseData.data)} )
         .catch(reject);
     });
@@ -31,6 +39,19 @@ const TheatreSlice = createSlice({
             state.theatresErrorMsg = null;
         });
         builder.addCase(getAllTheatresOfOwner.rejected, (state, action)=>{
+            state.theatresAreLoading = false;
+            state.theatresErrorMsg = action.error.message;
+            state.theatres = [];
+        });
+        builder.addCase(getAllTheatres.pending, (state)=>{
+            state.theatresAreLoading = true;
+        });
+        builder.addCase(getAllTheatres.fulfilled, (state, action)=>{
+            state.theatresAreLoading = false;
+            state.theatres = action.payload;
+            state.theatresErrorMsg = null;
+        });
+        builder.addCase(getAllTheatres.rejected, (state, action)=>{
             state.theatresAreLoading = false;
             state.theatresErrorMsg = action.error.message;
             state.theatres = [];
