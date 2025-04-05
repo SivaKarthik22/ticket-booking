@@ -5,7 +5,7 @@ import UserSlice from "../redux/UserSlice";
 import { UserOutlined } from '@ant-design/icons';
 import '../styles/component-styles.css'
 
-function NavBar({mode, defaultKey}){
+function NavBar({mode, defaultSelectionKey}){
     const {user} = useSelector(store=> store.user);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -64,15 +64,15 @@ function NavBar({mode, defaultKey}){
             <img 
                 width="130"
                 src="/MyDayMyShow_logo.png"
-                //onClick={ ()=>{navigate('/')} }
-                //className="cursor-pointer"
+                onClick={ !user ? ()=>{navigate('/')} : ()=>{}}
+                className={ !user ? "cursor-pointer" : ""}
             />
             {(mode == "page") && (user ? 
                 (<Menu 
                     mode="horizontal"
                     theme="light"
                     items={navItems()}
-                    defaultSelectedKeys={[defaultKey]}
+                    defaultSelectedKeys={[defaultSelectionKey]}
                     className="nav-menu white-bg"
                 ></Menu>) :
                 (<Flex gap="small">

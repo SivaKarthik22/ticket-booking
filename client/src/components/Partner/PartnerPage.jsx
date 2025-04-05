@@ -1,54 +1,47 @@
 import { Button, Tabs, Flex, Spin, Form, message } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import AccessDeny from "../AccessDeny";
-import MovieTable from "./MovieTable";
 import { useEffect, useState } from "react";
-import { getAllMovies } from "../../redux/MovieSlice";
 import { PlusOutlined } from "@ant-design/icons";
-import MovieFormModal from "./MovieFormModal";
-import { deleteMovie, postMovie, putMovie } from "../../services/movieServices";
-import DeleteMovieModal from "./DeleteMovieModal";
+import TheatreTable from "./TheatreTable";
+import TheatreFormModal from "./TheatreFormModal";
+import DeleteTheatreModal from "./DeleteTheatreModal";
 
-
-function AdminPage(){
+function PartnerPage(){
     const [messageApi, contextHolder] = message.useMessage();
-    const {user, userLoading} = useSelector(store=> store.user);
+    const {user, userLoading} = useSelector(store => store.user);
     const dispatch = useDispatch();
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [form] = Form.useForm();
     const [formIsLoading, setFormIsLoading] = useState(false);
     const [formType, setFormType] = useState("create");
-    const [curMovie, setCurMovie] = useState(null);
+    const [curTheatre, setCurTheatre] = useState(null);
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
     const [deleteModalIsLoading, setDeleteModalIsLoading] = useState(false);
 
-    useEffect(()=>{
-        dispatch(getAllMovies());
-    },[]);
-
     function closeModal(){
         setModalIsOpen(false);
-        setCurMovie(null);
+        setCurTheatre(null);
     }
     function openNewForm(){
         setModalIsOpen(true);
         setFormType("create");
     }
-    function openEditingForm(movieObj){
+    function openEditingForm(theatreObj){
         setModalIsOpen(true);
-        setCurMovie(movieObj);
+        setCurTheatre(theatreObj);
         setFormType("edit");
     }
-    function openDeleteModal(movieObj){
-        setCurMovie(movieObj);
+    function openDeleteModal(theatreObj){
+        setCurTheatre(theatreObj);
         setDeleteModalIsOpen(true);
     }
     function closeDeleteModal(){
         setDeleteModalIsOpen(false);
-        setCurMovie(null);
+        setCurTheatre(null);
     }
     async function deleteRecord(){
-        setDeleteModalIsLoading(true);
+        /*setDeleteModalIsLoading(true);
         const responseData = await deleteMovie(curMovie);
         setDeleteModalIsLoading(false);
         
@@ -66,10 +59,10 @@ function AdminPage(){
             });
         }
         setDeleteModalIsOpen(false);
-        setCurMovie(null);
+        setCurMovie(null);*/
     }
-    async function submitMovieForm(values){
-        setFormIsLoading(true);
+    async function submitTheatreForm(values){
+        /*setFormIsLoading(true);
         let responseData;
         if(formType == "edit")
             responseData = await putMovie({...values, _id : curMovie._id});
@@ -91,42 +84,41 @@ function AdminPage(){
                 type: 'warning',
                 content: `${responseData.message}. Please try again`,
             });
-        }
+        }*/
     }
+
+    /*useEffect(()=>{
+        dispatch(getAllMovies());
+    },[]);*/
 
     const tabItems = [
         {
             key: 1,
-            label: 'Movies List',
+            label: 'My Theatres List',
             children: <>
-                <MovieFormModal
+                <TheatreFormModal 
                     closeModal={closeModal}
-                    submitMovieForm={submitMovieForm}
+                    submitTheatreForm={submitTheatreForm}
                     form={form}
                     modalIsOpen={modalIsOpen}
                     formIsLoading={formIsLoading}
                     formType={formType}
-                    curMovie={curMovie}
+                    curTheatre={curTheatre}
                 />
-                <DeleteMovieModal 
+                <DeleteTheatreModal 
                     closeDeleteModal={closeDeleteModal}
                     deleteModalIsOpen={deleteModalIsOpen}
                     deleteModalIsLoading={deleteModalIsLoading}
-                    curMovie={curMovie}
+                    curTheatre={curTheatre}
                     deleteRecord={deleteRecord}
                 />
                 <Flex justify="end" style={{padding:"10px 20px 20px 20px"}}>
-                    <Button className="button1" type="primary" icon={<PlusOutlined />} onClick={openNewForm}>
-                        Add Movie
+                    <Button className="button1" type="primary" icon={<PlusOutlined />} onClick={openNewForm} >
+                        Add Theatre
                     </Button>
                 </Flex>
-                <MovieTable openEditingForm={openEditingForm} openDeleteModal={openDeleteModal}/>
+                <TheatreTable/>
             </>,
-        },
-        {
-            key: 2,
-            label: 'Theatres List',
-            children: 'Content 2',
         },
     ];
 
@@ -138,7 +130,7 @@ function AdminPage(){
             </Flex>
         );
     }
-    if(!user || user.role != "admin"){
+    if(!user || user.role != "partner"){
         return <AccessDeny/> ;
     }
     return(
@@ -149,4 +141,4 @@ function AdminPage(){
     );
 }
 
-export default AdminPage;
+export default PartnerPage;

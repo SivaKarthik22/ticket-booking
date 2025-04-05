@@ -8,7 +8,8 @@ import CustomerProfile from './components/Customer/CustomerProfile';
 import AdminProfile from './components/Admin/AdminProfile';
 import PartnerProfile from './components/Partner/PartnerProfile';
 import AdminPage from './components/Admin/AdminPage';
-import './styles/component-styles.css'
+import PartnerPage from './components/Partner/PartnerPage';
+import './styles/component-styles.css';
 
 function App() {
   return (
@@ -25,11 +26,12 @@ function App() {
       <Routes>
         <Route path='/register/:role' element={<Register/>}></Route>
         <Route path='/login/:role' element={<Login/>}></Route>
-        <Route path='/' element={<ProtectedComp defaultKey="1"> <Home/> </ProtectedComp>}></Route>
-        <Route path='/customer-profile' element={<ProtectedComp defaultKey="3"> <CustomerProfile/> </ProtectedComp>}></Route>
-        <Route path='/admin-profile' element={<ProtectedComp defaultKey="3"> <AdminProfile/> </ProtectedComp>}></Route>
-        <Route path='/partner-profile' element={<ProtectedComp defaultKey="3"> <PartnerProfile/> </ProtectedComp>}></Route>
-        <Route path='/admin-page' element={<ProtectedComp defaultKey="2"> <AdminPage/> </ProtectedComp>}></Route>
+        <Route path='/' element={<ProtectedComp defaultSelectionKey="1"> <Home/> </ProtectedComp>}></Route>
+        <Route path='/customer-profile' element={<ProtectedComp defaultSelectionKey="3"> <CustomerProfile/> </ProtectedComp>}></Route>
+        <Route path='/admin-profile' element={<ProtectedComp defaultSelectionKey="3"> <AdminProfile/> </ProtectedComp>}></Route>
+        <Route path='/partner-profile' element={<ProtectedComp defaultSelectionKey="3"> <PartnerProfile/> </ProtectedComp>}></Route>
+        <Route path='/admin-page' element={<ProtectedComp defaultSelectionKey="2"> <AdminPage/> </ProtectedComp>}></Route>
+        <Route path='/partner-page' element={<ProtectedComp defaultSelectionKey="2"> <PartnerPage/> </ProtectedComp>}></Route>
       </Routes>
     </ConfigProvider>
   )

@@ -23,13 +23,13 @@ function MovieFormModal({closeModal, submitMovieForm, form, modalIsOpen, formIsL
             onCancel={closeModal}
             footer=""
             style={{minWidth:"600px"}}
+            centered
         >
             <Spin size="large" spinning={formIsLoading}>
                 <Form
                     layout="vertical"
                     form={form}
                     onFinish={submitMovieForm}
-                    //initialValues={curMovie}
                 >
                     <Form.Item label="Movie Name" name="title"
                         rules={[formRulesObj]}

@@ -13,7 +13,7 @@ movieRouter.post('/add-movie', async (req, resp)=>{
         });
     }
     catch(error){
-        resp.status(400).send({
+        resp.status(500).send({
             success: false,
             message: `Failed to create new movie: ${error.message}`
         });
