@@ -45,3 +45,15 @@ export async function deleteTheatre(values){
         return error.response.data;
     }
 }
+
+export async function toggleTheatreApproval(theatreObj){
+    try{
+        theatreObj.isActive = !theatreObj.isActive;
+        const response = await theatreAxiosInstance.put("/update-theatre", theatreObj);
+        response.data.message = theatreObj.isActive ? "Theatre approved successfully" : "Theatre blocked";
+        return response.data;
+    }
+    catch(error){
+        return error.response.data;
+    }
+}

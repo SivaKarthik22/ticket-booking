@@ -6,7 +6,7 @@ import { getAllTheatresOfOwner, getAllTheatres } from "../../redux/TheatreSlice"
 import { useEffect, useState } from "react";
 import TheatreFormModal from "./TheatreFormModal";
 import DeleteTheatreModal from "./DeleteTheatreModal";
-import { putTheatre, postTheatre, deleteTheatre } from "../../services/theatreServices";
+import { putTheatre, postTheatre, deleteTheatre, toggleTheatreApproval } from "../../services/theatreServices";
 import TheatreSlice from "../../redux/TheatreSlice";
 
 function TheatreTable({messageApi}){
@@ -81,8 +81,10 @@ function TheatreTable({messageApi}){
     async function submitTheatreForm(values){
         setFormIsLoading(true);
         let responseData;
-        if(formType == "edit")
+        if(formType == "edit"){
+            values.isActive = false;
             responseData = await putTheatre({...values, _id : curTheatre._id});
+        }
         else
             responseData = await postTheatre({...values, owner: user._id});
         setFormIsLoading(false);
@@ -95,6 +97,22 @@ function TheatreTable({messageApi}){
             });
             setCurTheatre(null);
             dispatch(getAllTheatresOfOwner(user._id));
+        }
+        else{
+            messageApi.open({
+                type: 'warning',
+                content: `${responseData.message}. Please try again`,
+            });
+        }
+    }
+    async function approveOrBlockTheatre(theatreObj){
+        const responseData = await toggleTheatreApproval(theatreObj);
+        if(responseData.success){
+            messageApi.open({
+                type: 'success',
+                content: responseData.message,
+            });
+            dispatch(getAllTheatres());
         }
         else{
             messageApi.open({
@@ -136,7 +154,7 @@ function TheatreTable({messageApi}){
             title: "Status",
             dataIndex: "isActive",
             key: "isActive",
-            render: value => (value ? "Approved" : "Pending"),
+            render: value => (value ? <span className="red bold">Approved</span> : "Pending"),
         },
         {
             title: "Actions",
@@ -153,7 +171,7 @@ function TheatreTable({messageApi}){
                                 <DeleteTwoTone className="form-button-icon" twoToneColor="#f8447a"/>
                             </Button>
                             {record.isActive && 
-                                <Button className="icon-button red" icon={<PlusOutlined/>} style={{fontWeight: "bold"}}>
+                                <Button className="icon-button red bold" icon={<PlusOutlined/>} >
                                     Add Shows
                                 </Button>
                             }
@@ -161,8 +179,15 @@ function TheatreTable({messageApi}){
                     )}
                     {user.role == "admin" && <>
                         {record.isActive ? 
-                        <Button className="button1">Block</Button> :
-                        <Button className="button1" type="primary">Approve</Button>}
+                        <Button
+                            className="button2"
+                            onClick={async ()=>{approveOrBlockTheatre(record)}}
+                        >Block</Button> :
+                        <Button
+                            className="button2"
+                            type="primary"
+                            onClick={async ()=>{approveOrBlockTheatre(record)}}
+                        >Approve</Button>}
                     </>}
                 </>);
             },

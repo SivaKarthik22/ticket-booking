@@ -11,6 +11,9 @@
 .red{
     color: var(--highlight);
 }
+.bold{
+    font-weight: bold;
+}
 .button1{
     padding: 20px;
 }
