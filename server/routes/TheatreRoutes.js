@@ -83,7 +83,7 @@ theatreRouter.delete('/delete-theatre/:id', async (req, resp)=>{
 
 theatreRouter.get('/theatres-by-owner/:ownerId', async (req, resp)=>{
     try{
-        if(req.params.id.toString().length != 24){
+        if(req.params.ownerId.toString().length != 24){
             return resp.status(400).send({
                 success: false,
                 message: "Invalid owner id",

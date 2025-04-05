@@ -1,4 +1,4 @@
-import { Button, Tabs, Flex, Spin, Form, message } from "antd";
+import { Button, Tabs, Flex, Form, message } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import AccessDeny from "../AccessDeny";
 import MovieTable from "./MovieTable";
@@ -8,6 +8,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import MovieFormModal from "./MovieFormModal";
 import { deleteMovie, postMovie, putMovie } from "../../services/movieServices";
 import DeleteMovieModal from "./DeleteMovieModal";
+import LoadingComp from "../LoadingComp";
 
 function AdminPage(){
     const [messageApi, contextHolder] = message.useMessage();
@@ -130,12 +131,7 @@ function AdminPage(){
     ];
 
     if(userLoading){
-        return (
-            <Flex vertical gap="middle" justify="center" align="center">
-                <Spin size="large" spinning={true}></Spin>
-                <p style={{fontSize:"16px"}}>Page is Loading</p>
-            </Flex>
-        );
+        return <LoadingComp/>;
     }
     if(!user || user.role != "admin"){
         return <AccessDeny/> ;

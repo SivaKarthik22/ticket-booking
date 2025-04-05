@@ -1,13 +1,11 @@
 import { theatreAxiosInstance } from ".";
 
-export async function getAllTheatresOfOwner(ownerId){
-    try{
-        const response = await theatreAxiosInstance.get(`/theatres-by-owner/${ownerId}`);
-        return response.data;
-    }
-    catch(error){
-        return error.response.data;
-    }
+export async function fetchAllTheatresOfOwner(ownerId){
+    return new Promise((resolve, reject)=>{
+        theatreAxiosInstance.get(`/theatres-by-owner/${ownerId}`)
+        .then(response => {resolve(response.data)} )
+        .catch(error => {reject(error.response.data)} );
+    });
 }
 
 export async function postTheatre(values){

@@ -31,7 +31,7 @@ function TheatreFormModal({closeModal, submitTheatreForm, form, modalIsOpen, for
                         rules={[formRulesObj]}
                     ><Input />
                     </Form.Item>
-                    <Form.Item label="Movie Description" name="description"
+                    <Form.Item label="Theatre Address" name="address"
                         rules={[formRulesObj]}
                     ><Input.TextArea rows={3} />
                     </Form.Item>

@@ -1,4 +1,4 @@
-import { Button, Tabs, Flex, Spin, Form, message } from "antd";
+import { Button, Tabs, Flex, Form, message } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import AccessDeny from "../AccessDeny";
 import { useEffect, useState } from "react";
@@ -6,6 +6,9 @@ import { PlusOutlined } from "@ant-design/icons";
 import TheatreTable from "./TheatreTable";
 import TheatreFormModal from "./TheatreFormModal";
 import DeleteTheatreModal from "./DeleteTheatreModal";
+import { getAllTheatresOfOwner } from "../../redux/TheatreSlice";
+import { putTheatre, postTheatre, deleteTheatre } from "../../services/theatreServices";
+import LoadingComp from "../LoadingComp";
 
 function PartnerPage(){
     const {user, userLoading} = useSelector(store => store.user);
@@ -19,9 +22,11 @@ function PartnerPage(){
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
     const [deleteModalIsLoading, setDeleteModalIsLoading] = useState(false);
 
-    /*useEffect(()=>{
-        dispatch(getAllMovies());
-    },[]);*/
+    useEffect(()=>{
+        if(user){
+            dispatch( getAllTheatresOfOwner(user._id) );
+        } 
+    },[user]);
 
     function closeModal(){
         setModalIsOpen(false);
@@ -45,8 +50,8 @@ function PartnerPage(){
         setCurTheatre(null);
     }
     async function deleteRecord(){
-        /*setDeleteModalIsLoading(true);
-        const responseData = await deleteMovie(curMovie);
+        setDeleteModalIsLoading(true);
+        const responseData = await deleteTheatre(curTheatre);
         setDeleteModalIsLoading(false);
         
         if(responseData.success){
@@ -54,7 +59,7 @@ function PartnerPage(){
                 type: 'success',
                 content: responseData.message,
             });
-            dispatch(getAllMovies());
+            dispatch(getAllTheatresOfOwner(user._id));
         }
         else{
             messageApi.open({
@@ -63,7 +68,7 @@ function PartnerPage(){
             });
         }
         setDeleteModalIsOpen(false);
-        setCurMovie(null);*/
+        setCurTheatre(null);
     }
     async function submitTheatreForm(values){
         setFormIsLoading(true);
@@ -81,7 +86,7 @@ function PartnerPage(){
                 content: responseData.message,
             });
             setCurTheatre(null);
-            dispatch(getAllTheatres());
+            dispatch(getAllTheatresOfOwner(user._id));
         }
         else{
             messageApi.open({
@@ -117,18 +122,13 @@ function PartnerPage(){
                         Add Theatre
                     </Button>
                 </Flex>
-                <TheatreTable/>
+                <TheatreTable openEditingForm={openEditingForm} openDeleteModal={openDeleteModal} />
             </>,
         },
     ];
 
     if(userLoading){
-        return (
-            <Flex vertical gap="middle" justify="center" align="center">
-                <Spin size="large" spinning={true}></Spin>
-                <p style={{fontSize:"16px"}}>Page is Loading</p>
-            </Flex>
-        );
+        return <LoadingComp/>;
     }
     if(!user || user.role != "partner"){
         return <AccessDeny/> ;

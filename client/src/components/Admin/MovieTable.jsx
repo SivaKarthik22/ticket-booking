@@ -2,9 +2,10 @@ import { Button, Flex, Table, Spin } from "antd";
 import { useSelector } from "react-redux";
 import { EditTwoTone, DeleteTwoTone } from "@ant-design/icons";
 import moment from 'moment';
+import ErrorComp from "../ErrorComp";
 
 function MovieTable({openEditingForm, openDeleteModal}){
-    const {movies, isLoading} = useSelector(store => store.movies);
+    const {movies, isLoading, errorMsg} = useSelector(store => store.movies);
 
     const columns = [
         {
@@ -63,6 +64,9 @@ function MovieTable({openEditingForm, openDeleteModal}){
     if(isLoading){
         return <Flex justify="center"><Spin size="large" spinning={isLoading}></Spin></Flex>; 
     }
+    if(errorMsg){
+        return <ErrorComp/>
+    }
     return(
         <>
             <Table
@@ -71,9 +75,7 @@ function MovieTable({openEditingForm, openDeleteModal}){
                 expandable={{
                     expandedRowRender: record => <p><span style={{fontWeight:"bold"}}>Description:  </span>{record.description}</p>
                 }}
-                pagination={{
-                    pageSize: 5,
-                  }}
+                pagination={{pageSize: 5}}
             ></Table>
         </>
     );
