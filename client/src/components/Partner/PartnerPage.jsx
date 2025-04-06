@@ -1,7 +1,7 @@
 import { Tabs, message } from "antd";
 import { useSelector } from "react-redux";
 import AccessDeny from "../AccessDeny";
-import TheatreTable from "./TheatreTable";
+import TheatreTable from "../TheatreTable";
 import LoadingComp from "../LoadingComp";
 
 function PartnerPage(){
@@ -11,8 +11,13 @@ function PartnerPage(){
     const tabItems = [
         {
             key: 1,
-            label: 'My Theatres List',
+            label: 'My Theatres',
             children: <TheatreTable messageApi={messageApi} />,
+        },
+        {
+            key: 2,
+            label: 'My Shows',
+            //children:  ,
         },
     ];
 

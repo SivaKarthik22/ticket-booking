@@ -1,13 +1,13 @@
 import { Button, Flex, Table, Spin, Form } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { EditTwoTone, DeleteTwoTone, PlusOutlined } from "@ant-design/icons";
-import ErrorComp from "../ErrorComp";
-import { getAllTheatresOfOwner, getAllTheatres } from "../../redux/TheatreSlice";
+import ErrorComp from "./ErrorComp";
+import { getAllTheatresOfOwner, getAllTheatres } from "../redux/TheatreSlice";
 import { useEffect, useState } from "react";
 import TheatreFormModal from "./TheatreFormModal";
 import DeleteTheatreModal from "./DeleteTheatreModal";
-import { putTheatre, postTheatre, deleteTheatre, toggleTheatreApproval } from "../../services/theatreServices";
-import TheatreSlice from "../../redux/TheatreSlice";
+import { putTheatre, postTheatre, deleteTheatre, toggleTheatreApproval } from "../services/theatreServices";
+import TheatreSlice from "../redux/TheatreSlice";
 
 function TheatreTable({messageApi}){
     const {theatres, theatresAreLoading, theatresErrorMsg} = useSelector(store => store.theatres);
@@ -79,6 +79,21 @@ function TheatreTable({messageApi}){
         setCurTheatre(null);
     }
     async function submitTheatreForm(values){
+        if(!values.email.includes('@')){
+            messageApi.open({
+                type: 'warning',
+                content: "Enter a valid e-mail",
+            });
+            return;
+        }
+        if(values.phone.toString().length != 10){
+            messageApi.open({
+                type: 'warning',
+                content: "Enter a valid phone number",
+            });
+            return;
+        }
+        
         setFormIsLoading(true);
         let responseData;
         if(formType == "edit"){
@@ -197,9 +212,9 @@ function TheatreTable({messageApi}){
         return {...theatre, key: `theatre_${theatre._id}`};
     });
 
-    if(theatresAreLoading){
+    /*if(theatresAreLoading){
         return <Flex justify="center"><Spin size="large" spinning={theatresAreLoading}></Spin></Flex>; 
-    }
+    }*/
     if(theatresErrorMsg){
         return <ErrorComp/>
     }
@@ -222,7 +237,7 @@ function TheatreTable({messageApi}){
                     curTheatre={curTheatre}
                     deleteRecord={deleteRecord}
                 />
-                <Flex justify="end" style={{padding:"10px 20px 20px 20px"}}>
+                <Flex justify="end" style={{padding:"3px 20px 20px 20px"}}>
                     <Button className="button1" type="primary" icon={<PlusOutlined />} onClick={openNewForm} >
                         Add Theatre
                     </Button>

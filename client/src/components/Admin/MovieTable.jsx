@@ -147,9 +147,9 @@ function MovieTable({messageApi}){
         return {...movie, key: `movie_${movie._id}`};
     });
 
-    if(isLoading){
+    /*if(isLoading){
         return <Flex justify="center"><Spin size="large" spinning={isLoading}></Spin></Flex>; 
-    }
+    }*/
     if(errorMsg){
         return <ErrorComp/>
     }
@@ -171,7 +171,7 @@ function MovieTable({messageApi}){
                 curMovie={curMovie}
                 deleteRecord={deleteRecord}
             />
-            <Flex justify="end" style={{padding:"10px 20px 20px 20px"}}>
+            <Flex justify="end" style={{padding:"3px 20px 20px 20px"}}>
                 <Button className="button1" type="primary" icon={<PlusOutlined />} onClick={openNewForm}>
                     Add Movie
                 </Button>

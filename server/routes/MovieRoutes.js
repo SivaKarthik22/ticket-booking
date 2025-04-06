@@ -1,5 +1,6 @@
 const express = require('express');
 const MovieModel = require('../models/MovieModel');
+const idValidityCheck = require('../middlewares/idValidityCheck');
 
 const movieRouter = express.Router();
 
@@ -37,15 +38,8 @@ movieRouter.get('/get-all-movies', async (req, resp)=>{
     }
 });
 
-movieRouter.put('/update-movie', async (req, resp)=>{
+movieRouter.put('/update-movie', idValidityCheck, async (req, resp)=>{
     try{
-        if(req.body._id.toString().length != 24){
-            return resp.status(400).send({
-                success: false,
-                message: "Invalid id",
-            });  //server gets crashed if I don't add this return statement here
-        }
-
         const movieDoc = await MovieModel.findByIdAndUpdate(req.body._id, req.body, {new: true});
         if(!movieDoc){
             return resp.status(404).send({
@@ -68,15 +62,8 @@ movieRouter.put('/update-movie', async (req, resp)=>{
     }
 });
 
-movieRouter.get('/movie/:id', async (req, resp)=>{
+movieRouter.get('/movie/:id', idValidityCheck, async (req, resp)=>{
     try{
-        if(req.params.id.toString().length != 24){
-            return resp.status(400).send({
-                success: false,
-                message: "Invalid id",
-            });
-        }
-        
         const movieDoc = await MovieModel.findById(req.params.id);
         if(!movieDoc){
             return resp.status(404).send({
@@ -99,15 +86,8 @@ movieRouter.get('/movie/:id', async (req, resp)=>{
     }
 });
 
-movieRouter.delete('/delete-movie/:id', async (req, resp)=>{
+movieRouter.delete('/delete-movie/:id', idValidityCheck, async (req, resp)=>{
     try{
-        if(req.params.id.toString().length != 24){
-            return resp.status(400).send({
-                success: false,
-                message: "Invalid id",
-            });
-        }
-
         const deletedMovieDoc = await MovieModel.findByIdAndDelete(req.params.id);
         if(!deletedMovieDoc){
             return resp.status(404).send({

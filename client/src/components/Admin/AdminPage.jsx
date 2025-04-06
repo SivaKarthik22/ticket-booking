@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import AccessDeny from "../AccessDeny";
 import MovieTable from "./MovieTable";
 import LoadingComp from "../LoadingComp";
-import TheatreTable from "../Partner/TheatreTable";
+import TheatreTable from "../TheatreTable";
 
 function AdminPage(){
     const {user, userLoading} = useSelector(store=> store.user);

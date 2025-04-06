@@ -23,7 +23,8 @@ const theatreSchema = new mongoose.Schema({
     },
     owner:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user' //name of the collection to which the ObjectId refers to 
+        ref: 'user', //name of the collection from which the value for this field should be populated 
+        required: true,
     }
 },
 {timestamps: true});

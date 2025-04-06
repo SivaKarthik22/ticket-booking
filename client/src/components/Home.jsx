@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllMovies } from "../redux/MovieSlice";
 import { Card, Flex } from "antd";
 import '../styles/component-styles.css';
+import ErrorComp from "./ErrorComp";
 
 function Home(){
     const {movies, isLoading, errorMsg} = useSelector(store => store.movies);
@@ -24,7 +25,7 @@ function Home(){
                         ))}
                     </>
                 )}
-                {!isLoading && errorMsg && <p>Error loading movies! Please try again later</p>}
+                {!isLoading && errorMsg && <ErrorComp/>}
                 {!isLoading && !errorMsg && movies.length == 0 && <p>No Movies at this location</p>}
                 {!isLoading && movies.length > 0 && (
                     <>  

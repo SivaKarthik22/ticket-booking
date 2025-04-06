@@ -1,5 +1,6 @@
 const express = require('express');
 const TheatreModel = require('../models/TheatreModel');
+const idValidityCheck = require('../middlewares/idValidityCheck');
 
 const theatreRouter = express.Router();
 
@@ -20,15 +21,8 @@ theatreRouter.post('/add-theatre', async (req, resp)=>{
     }
 });
 
-theatreRouter.put('/update-theatre', async (req, resp)=>{
+theatreRouter.put('/update-theatre', idValidityCheck, async (req, resp)=>{
     try{
-        if(req.body._id.toString().length != 24){
-            return resp.status(400).send({
-                success: false,
-                message: "Invalid id",
-            });
-        }
-
         const theatreDoc = await TheatreModel.findByIdAndUpdate(req.body._id, req.body, {new: true});
         if(!theatreDoc){
             return resp.status(404).send({
@@ -51,15 +45,8 @@ theatreRouter.put('/update-theatre', async (req, resp)=>{
     }
 });
 
-theatreRouter.delete('/delete-theatre/:id', async (req, resp)=>{
+theatreRouter.delete('/delete-theatre/:id', idValidityCheck, async (req, resp)=>{
     try{
-        if(req.params.id.toString().length != 24){
-            return resp.status(400).send({
-                success: false,
-                message: "Invalid id",
-            });
-        }
-
         const deletedTheatreDoc = await TheatreModel.findByIdAndDelete(req.params.id);
         if(!deletedTheatreDoc){
             return resp.status(404).send({
@@ -81,16 +68,9 @@ theatreRouter.delete('/delete-theatre/:id', async (req, resp)=>{
     }
 });
 
-theatreRouter.get('/get-theatres-by-owner/:ownerId', async (req, resp)=>{
+theatreRouter.get('/get-theatres-by-owner/:id', idValidityCheck, async (req, resp)=>{
     try{
-        if(req.params.ownerId.toString().length != 24){
-            return resp.status(400).send({
-                success: false,
-                message: "Invalid owner id",
-            });
-        }
-        
-        const theatreDocArray = await TheatreModel.find({owner: req.params.ownerId});
+        const theatreDocArray = await TheatreModel.find({owner: req.params.id});
         if(!theatreDocArray){
             return resp.status(404).send({
                 success: false,

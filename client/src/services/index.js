@@ -20,3 +20,10 @@ export const theatreAxiosInstance = axios.create({
         'Content-Type': 'application/json',
     },
 });
+
+export const showAxiosInstance = axios.create({
+    baseURL: "/api/shows/",
+    headers : {
+        'Content-Type': 'application/json',
+    },
+});
