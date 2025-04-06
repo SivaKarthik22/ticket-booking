@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import AccessDeny from "../AccessDeny";
 import TheatreTable from "../TheatreTable";
 import LoadingComp from "../LoadingComp";
+import ShowsComp from "./ShowsComp";
 
 function PartnerPage(){
     const {user, userLoading} = useSelector(store => store.user);
@@ -17,7 +18,7 @@ function PartnerPage(){
         {
             key: 2,
             label: 'My Shows',
-            //children:  ,
+            children: <ShowsComp messageApi={messageApi}/>,
         },
     ];
 

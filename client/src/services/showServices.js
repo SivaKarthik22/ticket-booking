@@ -1,6 +1,6 @@
 import { showAxiosInstance } from ".";
 
-export async function fetchAllShowsByTheatre(theatreId){
+export async function fetchAllShowsOfTheatre(theatreId){
     return new Promise((resolve, reject)=>{
         showAxiosInstance.get(`/get-shows-by-theatre/${theatreId}`)
         .then(response => {resolve(response.data)} )
