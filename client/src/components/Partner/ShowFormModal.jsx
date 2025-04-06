@@ -1,13 +1,11 @@
 import { Button, Flex, Modal, Form, Input, InputNumber, Select, Spin } from "antd";
-import moment from 'moment';
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 function ShowFormModal({closeModal, submitShowForm, form, modalIsOpen, formIsLoading, formType, curShow, theatreName}){
 
     const formRulesObj = {required: true, message: <span style={{fontSize:"12px"}}>Required field</span> };
-
-    if(curShow)
-        curShow.date = moment(curShow.date).format("YYYY-MM-DD");
+    const {movies} = useSelector(store => store.movies)
 
     useEffect(() => {
         if(curShow)
@@ -22,7 +20,7 @@ function ShowFormModal({closeModal, submitShowForm, form, modalIsOpen, formIsLoa
             open={modalIsOpen}
             onCancel={closeModal}
             footer=""
-            style={{minWidth:"600px"}}
+            style={{minWidth:"800px"}}
             centered
         >
             <Spin size="large" spinning={formIsLoading}>
@@ -42,21 +40,20 @@ function ShowFormModal({closeModal, submitShowForm, form, modalIsOpen, formIsLoa
                         </Form.Item>
                         <Form.Item label="Show Timimg" name="time"
                             rules={[formRulesObj]} style={{flex:1}}
-                        ><Input type="date" className="width-full"/>
+                        ><Input type="time" className="width-full"/>
                         </Form.Item>
                     </Flex>
                     <Flex gap="small">
                         <Form.Item label="Select Movie" name="movie"
                             rules={[formRulesObj]} style={{flex:1}}
                         >
-                            {/*<Select className="width-full">
-                                <Select.Option value="Tamil">Tamil</Select.Option>
-                                <Select.Option value="Telugu">Telugu</Select.Option>
-                                <Select.Option value="Malayalam">Malayalam</Select.Option>
-                                <Select.Option value="Kannada">Kannada</Select.Option>
-                                <Select.Option value="Hindi">Hindi</Select.Option>
-                                <Select.Option value="English">English</Select.Option>
-                            </Select>*/}
+                            <Select className="width-full">
+                                {movies.map(movieObj => (
+                                    <Select.Option value={movieObj._id} key={movieObj._id}>
+                                        {movieObj.title}
+                                    </Select.Option>
+                                ))}
+                            </Select>
                         </Form.Item>
                         <Form.Item label="Ticket price (in Rs.)" name="ticketPrice"
                             rules={[formRulesObj]}  style={{flex:1}}

@@ -70,7 +70,7 @@ showRouter.delete('/delete-show/:id', idValidityCheck , async (req, resp)=>{
 
 showRouter.get('/get-shows-by-theatre/:id', idValidityCheck, async (req, resp)=>{
     try{
-        const showsDocArray = await ShowModel.find({theatre: req.params.id});
+        const showsDocArray = await ShowModel.find({theatre: req.params.id}).populate('movie');
         if(!showsDocArray){
             return resp.status(404).send({
                 success: false,

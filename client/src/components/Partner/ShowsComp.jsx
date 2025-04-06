@@ -9,25 +9,35 @@ import { getAllShowsOfTheatre } from "../../redux/ShowSlice.js";
 import { deleteShow, postShow, putShow } from "../../services/showServices.js";
 import ShowFormModal from "./ShowFormModal.jsx";
 import DeleteShowModal from "./DeleteShowModal.jsx";
+import { getAllMovies } from "../../redux/MovieSlice.js";
 
 function ShowsComp({messageApi}){
     const {user} = useSelector(store => store.user);
     const {theatres, theatresAreLoading, theatresErrorMsg} = useSelector(store => store.theatres);
     const dispatch = useDispatch();
+    const [curTheatreId, setCurTheatreId] = useState(null);
 
     useEffect(()=>{
         if(user)
             dispatch( getAllTheatresOfOwner(user._id) );
     },[user]);
+    useEffect(()=>{
+        dispatch( getAllMovies() );
+    },[]);
+    useEffect(()=>{
+        if(theatres)
+            setCurTheatreId(theatres[0]._id);
+    },[theatres]);
 
-    const tabItems = theatres.map((theatreObj, index) => {
+    const tabItems = theatres.map(theatreObj => {
         return {
-            key: index+1,
+            key: theatreObj._id,
             label: theatreObj.name,
             children: 
                 <ShowTable
                     messageApi={messageApi}
-                    theatreObj={theatreObj}
+                    curTheatreId={curTheatreId}
+                    curTheatreName={theatreObj.name}
                 />,
         }
     });
@@ -40,7 +50,14 @@ function ShowsComp({messageApi}){
     }
     return(
         <>
-            <Tabs items={tabItems} tabPosition="left" style={{marginTop:"20px"}} />
+            <Tabs
+                items={tabItems}
+                tabPosition="left"
+                style={{marginTop:"20px"}}
+                onChange={ (key) => {
+                    setCurTheatreId(key);
+                }}
+            />
         </>
     );
 }
@@ -50,7 +67,7 @@ export default ShowsComp;
 
 
 
-function ShowTable({messageApi, theatreObj}){
+function ShowTable({messageApi, curTheatreId, curTheatreName}){
     const {shows, showsErrorMsg} = useSelector(store => store.shows);
     const dispatch = useDispatch();
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -62,8 +79,9 @@ function ShowTable({messageApi, theatreObj}){
     const [deleteModalIsLoading, setDeleteModalIsLoading] = useState(false);
 
     useEffect(()=>{
-        dispatch( getAllShowsOfTheatre(theatreObj._id) );
-    },[]);
+        if(curTheatreId)
+            dispatch( getAllShowsOfTheatre(curTheatreId) );
+    },[curTheatreId]);
 
     function closeModal(){
         setModalIsOpen(false);
@@ -75,7 +93,11 @@ function ShowTable({messageApi, theatreObj}){
     }
     function openEditingForm(showObj){
         setModalIsOpen(true);
-        setCurShow(showObj);
+        setCurShow( {
+            ...showObj,
+            date: moment(showObj.date).format("YYYY-MM-DD"),
+            movie: showObj.movie._id,
+        } );
         setFormType("edit");
     }
     function openDeleteModal(showObj){
@@ -88,7 +110,7 @@ function ShowTable({messageApi, theatreObj}){
     }
     async function deleteRecord(){
         setDeleteModalIsLoading(true);
-        const responseData = await deleteShow(curMovie);
+        const responseData = await deleteShow(curShow);
         setDeleteModalIsLoading(false);
         
         if(responseData.success){
@@ -96,7 +118,7 @@ function ShowTable({messageApi, theatreObj}){
                 type: 'success',
                 content: responseData.message,
             });
-            dispatch( getAllShowsOfTheatre(theatreObj._id) );
+            dispatch( getAllShowsOfTheatre(curTheatreId) );
         }
         else{
             messageApi.open({
@@ -111,9 +133,9 @@ function ShowTable({messageApi, theatreObj}){
         setFormIsLoading(true);
         let responseData;
         if(formType == "edit")
-            responseData = await putShow({...values, _id : curShow._id});
+            responseData = await putShow(values);
         else
-            responseData = await postShow(values);
+            responseData = await postShow({...values, theatre: curTheatreId});
         setFormIsLoading(false);
         
         if(responseData.success){
@@ -123,7 +145,7 @@ function ShowTable({messageApi, theatreObj}){
                 content: responseData.message,
             });
             setCurShow(null);
-            dispatch( getAllShowsOfTheatre(theatreObj._id) );
+            dispatch( getAllShowsOfTheatre(curTheatreId) );
         }
         else{
             messageApi.open({
@@ -207,7 +229,7 @@ function ShowTable({messageApi, theatreObj}){
             formIsLoading={formIsLoading}
             formType={formType}
             curShow={curShow}
-            theatreName={theatreObj.name}
+            theatreName={curTheatreName}
         />
         <DeleteShowModal
             closeDeleteModal={closeDeleteModal}

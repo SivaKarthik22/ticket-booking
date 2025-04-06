@@ -1,13 +1,9 @@
 import { Button, Flex, Modal, Form, Input, InputNumber, Select, Spin } from "antd";
-import moment from 'moment';
 import { useEffect } from "react";
 
 function MovieFormModal({closeModal, submitMovieForm, form, modalIsOpen, formIsLoading, formType, curMovie}){
 
     const formRulesObj = {required: true, message: <span style={{fontSize:"12px"}}>Required field</span> };
-
-    if(curMovie)
-        curMovie.releaseDate = moment(curMovie.releaseDate).format("YYYY-MM-DD");
 
     useEffect(() => {
         if(curMovie)

@@ -34,7 +34,7 @@ function MovieTable({messageApi}){
     }
     function openEditingForm(movieObj){
         setModalIsOpen(true);
-        setCurMovie(movieObj);
+        setCurMovie({...movieObj, date: moment(movieObj.date).format("YYYY-MM-DD")});
         setFormType("edit");
     }
     function openDeleteModal(movieObj){
