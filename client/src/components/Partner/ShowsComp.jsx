@@ -133,7 +133,7 @@ function ShowTable({messageApi, curTheatreId, curTheatreName}){
         setFormIsLoading(true);
         let responseData;
         if(formType == "edit")
-            responseData = await putShow(values);
+            responseData = await putShow({...values, _id: curShow._id});
         else
             responseData = await postShow({...values, theatre: curTheatreId});
         setFormIsLoading(false);
