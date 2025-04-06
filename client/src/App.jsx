@@ -9,6 +9,7 @@ import AdminProfile from './components/Admin/AdminProfile';
 import PartnerProfile from './components/Partner/PartnerProfile';
 import AdminPage from './components/Admin/AdminPage';
 import PartnerPage from './components/Partner/PartnerPage';
+import MoviePage from './components/MoviePage';
 import './styles/component-styles.css';
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         <Route path='/partner-profile' element={<ProtectedComp defaultSelectionKey="3"> <PartnerProfile/> </ProtectedComp>}></Route>
         <Route path='/admin-page' element={<ProtectedComp defaultSelectionKey="2"> <AdminPage/> </ProtectedComp>}></Route>
         <Route path='/partner-page' element={<ProtectedComp defaultSelectionKey="2"> <PartnerPage/> </ProtectedComp>}></Route>
+        <Route path='/movie/:movieId' element={<ProtectedComp> <MoviePage/> </ProtectedComp>}></Route>
       </Routes>
     </ConfigProvider>
   )

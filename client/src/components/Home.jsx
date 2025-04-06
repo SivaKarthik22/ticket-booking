@@ -4,10 +4,12 @@ import { getAllMovies } from "../redux/MovieSlice";
 import { Card, Flex } from "antd";
 import '../styles/component-styles.css';
 import ErrorComp from "./ErrorComp";
+import { useNavigate } from 'react-router-dom';
 
 function Home(){
     const {movies, isLoading, errorMsg} = useSelector(store => store.movies);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(()=>{
         dispatch(getAllMovies());
@@ -35,6 +37,9 @@ function Home(){
                                 className="movie-card"
                                 cover={<img alt="movie poster" src={movie.poster} height="290"/>}
                                 key={movie._id}
+                                onClick={()=>{
+                                    navigate(`/movie/${movie._id}`);
+                                }}
                             >
                                 <Card.Meta title={movie.title} description={movie.language} />
                             </Card>

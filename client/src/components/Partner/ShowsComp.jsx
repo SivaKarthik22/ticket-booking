@@ -57,6 +57,7 @@ function ShowsComp({messageApi}){
                 onChange={ (key) => {
                     setCurTheatreId(key);
                 }}
+                tabBarStyle={{maxWidth: "200px"}}
             />
         </>
     );
