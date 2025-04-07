@@ -124,3 +124,25 @@
 .width-full{
     width: 100%;
 }
+.height-full{
+    height: 100%;
+}
+.image-container{
+    border-radius: 10px;
+    overflow: hidden;
+}
+.image-in-container{
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.date-input{
+    padding: 10px;
+    width: 200px;
+}
+.show-button{
+    padding: 20px 30px;
+    width: 120px;
+    text-align: center;
+}

@@ -5,6 +5,7 @@ import { Card, Flex } from "antd";
 import '../styles/component-styles.css';
 import ErrorComp from "./ErrorComp";
 import { useNavigate } from 'react-router-dom';
+import moment from "moment";
 
 function Home(){
     const {movies, isLoading, errorMsg} = useSelector(store => store.movies);
@@ -14,7 +15,6 @@ function Home(){
     useEffect(()=>{
         dispatch(getAllMovies());
     }, []);        
-
 
     return(
         <>
@@ -39,6 +39,7 @@ function Home(){
                                 key={movie._id}
                                 onClick={()=>{
                                     navigate(`/movie/${movie._id}`);
+                                    //navigate(`/movie/${movie._id}?date=${moment().format("YYYY-MM-DD")}`);
                                 }}
                             >
                                 <Card.Meta title={movie.title} description={movie.language} />

@@ -196,7 +196,7 @@ function ShowTable({messageApi, curTheatreId, curTheatreName}){
             title: "Available Seats",
             dataIndex: "bookedSeats",
             key: "availableSeats",
-            render: (bookedSeats,record) => record.totalSeats-bookedSeats,
+            render: (bookedSeats,record) => record.totalSeats-bookedSeats.length,
         },
         {
             title: "Actions",

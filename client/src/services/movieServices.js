@@ -48,3 +48,13 @@ export async function deleteMovie(values){
         return error.response.data;
     }
 }
+
+export async function getMovie(movieId){
+    try{
+        const response = await movieAxiosInstance.get(`/get-movie/${movieId}`);
+        return response.data;
+    }
+    catch(error){
+        return error.response.data;
+    }
+}

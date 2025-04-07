@@ -92,4 +92,35 @@ showRouter.get('/get-shows-by-theatre/:id', idValidityCheck, async (req, resp)=>
     }
 });
 
+showRouter.put('/get-theatre-shows-of-movie', async (req, resp)=>{
+    try{
+        const {movie, date} = req.body;
+        const showsDocsArray = await ShowModel.find({movie, date}).populate('theatre');
+
+        //structure the array with unique theatres and their shows inside them
+        const theatresMap = new Map();
+        showsDocsArray.forEach(showDoc => {
+            const theatreId = showDoc.theatre._id;
+            if(theatresMap.has(theatreId))
+                theatresMap.set(theatreId, {...showDoc.theatre._doc, shows: [...theatresMap.get(theatreId).shows, showDoc] } );
+            else
+                theatresMap.set(theatreId, {...showDoc.theatre._doc, shows: [showDoc]} );
+        });
+        
+        const theatresArray = Array.from(theatresMap.values());
+
+        resp.send({
+            success: true,
+            message: "All Theatres and Shows fetched successfully",
+            data: theatresArray,
+        });
+        
+    }catch(error){
+        resp.status(500).send({
+            success: false,
+            message: `Failed to fetch shows: ${error.message}`
+        });
+    }
+});
+
 module.exports = showRouter;

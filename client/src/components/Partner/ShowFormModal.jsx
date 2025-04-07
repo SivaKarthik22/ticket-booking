@@ -7,11 +7,13 @@ function ShowFormModal({closeModal, submitShowForm, form, modalIsOpen, formIsLoa
     const formRulesObj = {required: true, message: <span style={{fontSize:"12px"}}>Required field</span> };
     const {movies} = useSelector(store => store.movies)
 
+    useEffect(()=>{
+        form.resetFields();
+    });
     useEffect(() => {
+        //form.resetFields();
         if(curShow)
             form.setFieldsValue(curShow);
-        else
-            form.resetFields();
     }, [curShow]);
 
     return(

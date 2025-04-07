@@ -62,7 +62,7 @@ movieRouter.put('/update-movie', idValidityCheck, async (req, resp)=>{
     }
 });
 
-movieRouter.get('/movie/:id', idValidityCheck, async (req, resp)=>{
+movieRouter.get('/get-movie/:id', idValidityCheck, async (req, resp)=>{
     try{
         const movieDoc = await MovieModel.findById(req.params.id);
         if(!movieDoc){

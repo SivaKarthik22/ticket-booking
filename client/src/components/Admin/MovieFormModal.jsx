@@ -5,11 +5,12 @@ function MovieFormModal({closeModal, submitMovieForm, form, modalIsOpen, formIsL
 
     const formRulesObj = {required: true, message: <span style={{fontSize:"12px"}}>Required field</span> };
 
+    useEffect(()=>{
+        form.resetFields();
+    });
     useEffect(() => {
         if(curMovie)
             form.setFieldsValue(curMovie);
-        else
-            form.resetFields();
     }, [curMovie]);
 
     return(

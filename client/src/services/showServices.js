@@ -8,6 +8,16 @@ export async function fetchAllShowsOfTheatre(theatreId){
     });
 }
 
+export async function getAllShowsOfMovie(payload){
+    try{
+        const response = await showAxiosInstance.put(`/get-theatre-shows-of-movie`, payload);
+        return response.data;
+    }
+    catch(error){
+        return error.response.data;
+    }
+}
+
 export async function postShow(values){
     try{
         const response = await showAxiosInstance.post("/add-show", values);

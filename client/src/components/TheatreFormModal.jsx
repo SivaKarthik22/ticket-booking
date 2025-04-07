@@ -5,11 +5,12 @@ function TheatreFormModal({closeModal, submitTheatreForm, form, modalIsOpen, for
 
     const formRulesObj = {required: true, message: <span style={{fontSize:"12px"}}>Required field</span> };
 
+    useEffect(()=>{
+        form.resetFields();
+    });
     useEffect(() => {
         if(curTheatre)
             form.setFieldsValue(curTheatre);
-        else
-            form.resetFields();
     }, [curTheatre]);
 
     return(
