@@ -145,4 +145,24 @@
     padding: 20px 30px;
     width: 120px;
     text-align: center;
+    border-color: #b2b2b2;
+    font-weight: bold;
+}
+.show-button:hover{
+    border-color: #b2b2b2 !important;
+}
+.available{
+    color: #77B254;
+}
+.available:hover{
+    color: #77B254 !important;
+}
+.sold-out{
+    color: grey;
+}
+.filling-fast{
+    color: orange;
+}
+.filling-fast:hover{
+    color: orange !important;
 }

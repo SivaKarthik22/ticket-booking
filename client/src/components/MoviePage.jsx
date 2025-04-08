@@ -52,6 +52,20 @@ function MoviePage(){
         //navigate(`/movie/${movieId}?date=${formattedDate}`);
     }
 
+    function seatAvailabilityCheck(showObj){
+        const availableSeatPercentage = (showObj.totalSeats - showObj.bookedSeats.length)*100/showObj.totalSeats;
+        if(availableSeatPercentage == 0)
+            return "sold-out"
+        if(availableSeatPercentage > 50)
+            return "available"
+        return "filling-fast"
+    }
+    function checkSoldOut(showObj){
+        if(showObj.totalSeats - showObj.bookedSeats.length == 0)
+            return true;
+        return false;
+    }
+
     if(movieLoading) return <LoadingComp/>;
     if(movieError) return <ErrorComp/>;
     if(movie) {
@@ -106,12 +120,20 @@ function MoviePage(){
                 {theatresWithShows.map((theatreObj, index) => <div key={theatreObj._id}>
                     <Flex gap="large">
                         <Flex vertical gap="middle" style={{flex:"0.3"}}>
-                            <p className="bold">{theatreObj.name}</p>
+                            <h3>{theatreObj.name}</h3>
                             <p style={{fontSize:"12px", maxWidth:"80%"}}>{theatreObj.address}</p>
                         </Flex>
-                        <Space wrap style={{flex:"0.7"}} size="middle">
-                            {theatreObj.shows.map(showObj => (
-                                <Button className="show-button" style={{ backgroundColor: '#f5f5f5', borderColor: "999999" }} key={showObj._id}>
+                        <Space wrap style={{flex:"0.7"}} size="middle" align="start">
+                            {theatreObj.shows
+                            .sort((showObj1, showObj2)=>{
+                                return moment(showObj1.time, "HH:mm") - moment(showObj2.time, "HH:mm");
+                            })
+                            .map(showObj => (
+                                <Button
+                                    className={`show-button ${seatAvailabilityCheck(showObj)}`}
+                                    key={showObj._id}
+                                    disabled={checkSoldOut(showObj)}
+                                >
                                     {moment(showObj.time, "HH:mm").format("hh:mm A")}
                                 </Button>
                             ))}
