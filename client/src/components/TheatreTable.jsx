@@ -185,11 +185,11 @@ function TheatreTable({messageApi}){
                             <Button className="icon-button" onClick={()=>{ openDeleteModal(record) }}>
                                 <DeleteTwoTone className="form-button-icon" twoToneColor="#f8447a"/>
                             </Button>
-                            {record.isActive && 
+                            {/*record.isActive && 
                                 <Button className="icon-button red bold" icon={<PlusOutlined/>} >
                                     Add Shows
                                 </Button>
-                            }
+                            */}
                         </Flex>
                     )}
                     {user.role == "admin" && <>

@@ -11,8 +11,14 @@
 .red{
     color: var(--highlight);
 }
+.grey{
+    color: var(--grey);
+}
 .bold{
     font-weight: bold;
+}
+.italic{
+    font-style: italic;
 }
 .button1{
     padding: 20px;

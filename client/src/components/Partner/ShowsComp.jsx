@@ -10,6 +10,7 @@ import { deleteShow, postShow, putShow } from "../../services/showServices.js";
 import ShowFormModal from "./ShowFormModal.jsx";
 import DeleteShowModal from "./DeleteShowModal.jsx";
 import { getAllMovies } from "../../redux/MovieSlice.js";
+import LoadingComp from "../LoadingComp.jsx";
 
 function ShowsComp({messageApi}){
     const {user} = useSelector(store => store.user);
@@ -38,6 +39,7 @@ function ShowsComp({messageApi}){
                     messageApi={messageApi}
                     curTheatreId={curTheatreId}
                     curTheatreName={theatreObj.name}
+                    acceptNewShows={theatreObj.isActive}
                 />,
         }
     });
@@ -68,8 +70,8 @@ export default ShowsComp;
 
 
 
-function ShowTable({messageApi, curTheatreId, curTheatreName}){
-    const {shows, showsErrorMsg} = useSelector(store => store.shows);
+function ShowTable({messageApi, curTheatreId, curTheatreName, acceptNewShows}){
+    const {shows, showsErrorMsg, showsAreLoading} = useSelector(store => store.shows);
     const dispatch = useDispatch();
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [form] = Form.useForm();
@@ -221,6 +223,9 @@ function ShowTable({messageApi, curTheatreId, curTheatreName}){
     if(showsErrorMsg){
         return <ErrorComp/>
     }
+    if(showsAreLoading){
+        return <LoadingComp context="Data"/>
+    }
     return (<>
         <ShowFormModal
             closeModal={closeModal}
@@ -239,10 +244,15 @@ function ShowTable({messageApi, curTheatreId, curTheatreName}){
             curShow={curShow}
             deleteRecord={deleteRecord}
         />
-        <Flex justify="end" style={{padding:"0px 20px 20px 20px"}}>
-            <Button className="button1" type="primary" icon={<PlusOutlined />} onClick={openNewForm}>
-                Add Show
-            </Button>
+        <Flex justify="space-between" align="center" style={{padding:"0px 20px 20px 20px"}}>
+            <h2>Shows in {curTheatreName}</h2>
+            {acceptNewShows ? 
+                <Button className="button1" type="primary" icon={<PlusOutlined />} onClick={openNewForm}>
+                    Add Show
+                </Button>
+                :
+                <p className="italic grey">Get admin approval to add further shows to this theatre*</p>
+            }
         </Flex>
         <Table
             columns={columns}

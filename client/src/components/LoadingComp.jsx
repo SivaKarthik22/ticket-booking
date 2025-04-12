@@ -1,11 +1,11 @@
 import {  } from "@ant-design/icons";
 import { Flex, Spin } from "antd";
 
-function LoadingComp(){
+function LoadingComp({context}){
     return(
         <Flex vertical gap="middle" justify="center" align="center">
             <Spin size="large" spinning={true}></Spin>
-            <p style={{fontSize:"16px"}}>Page is Loading</p>
+            <p style={{fontSize:"16px"}}>{context ? context : "Page"} is Loading</p>
         </Flex>
     );
 }
