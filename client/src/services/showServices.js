@@ -47,3 +47,13 @@ export async function deleteShow(values){
         return error.response.data;
     }
 }
+
+export async function getShow(showId){
+    try{
+        const response = await showAxiosInstance.get(`/get-show/${showId}`);
+        return response.data;
+    }
+    catch(error){
+        return error.response.data;
+    }
+}

@@ -15,6 +15,7 @@ function MoviePage(){
     const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
     const navigate = useNavigate();
     const [theatresWithShows, setTheatresWithShows] = useState([]);
+    const [showsLoading, setShowsLoading] = useState(false);
 
     useEffect(()=>{
         async function initilizeMovie(){
@@ -35,13 +36,13 @@ function MoviePage(){
 
     useEffect(()=>{
         async function getTheatresAndShows(){
+            setShowsLoading(true);
             const responseData = await getAllShowsOfMovie({movie: movieId, date});
-            if(responseData.success){
+            setShowsLoading(false);
+            if(responseData.success)
                 setTheatresWithShows(responseData.data);
-            }
-            else{
+            else
                 setTheatresWithShows([]);
-            }
         }
         getTheatresAndShows();
     },[movieId, date]);
@@ -116,31 +117,34 @@ function MoviePage(){
             </Flex>
 
             <Card className="width-full" style={{ borderColor: '#d9d9d9' }}>
-                {theatresWithShows.length == 0 && <p>Sorry, No Shows available on this date</p>}
-                {theatresWithShows.map((theatreObj, index) => <div key={theatreObj._id}>
-                    <Flex gap="large">
-                        <Flex vertical gap="middle" style={{flex:"0.3"}}>
-                            <h3>{theatreObj.name}</h3>
-                            <p style={{fontSize:"12px", maxWidth:"80%"}}>{theatreObj.address}</p>
+                {showsLoading ? <LoadingComp/> : <>
+                    {theatresWithShows.length == 0 && <p>Sorry, No Shows available on this date</p>}
+                    {theatresWithShows.map((theatreObj, index) => <div key={theatreObj._id}>
+                        <Flex gap="large">
+                            <Flex vertical gap="middle" style={{flex:"0.3"}}>
+                                <h3>{theatreObj.name}</h3>
+                                <p style={{fontSize:"12px", maxWidth:"80%"}}>{theatreObj.address}</p>
+                            </Flex>
+                            <Space wrap style={{flex:"0.7"}} size="middle" align="start">
+                                {theatreObj.shows
+                                .sort((showObj1, showObj2)=>{
+                                    return moment(showObj1.time, "HH:mm") - moment(showObj2.time, "HH:mm");
+                                })
+                                .map(showObj => (
+                                    <Button
+                                        className={`show-button ${seatAvailabilityCheck(showObj)}`}
+                                        key={showObj._id}
+                                        disabled={checkSoldOut(showObj)}
+                                        onClick={()=>{ navigate(`/book-show/${showObj._id}`) }}
+                                    >
+                                        {moment(showObj.time, "HH:mm").format("hh:mm A")}
+                                    </Button>
+                                ))}
+                            </Space>                        
                         </Flex>
-                        <Space wrap style={{flex:"0.7"}} size="middle" align="start">
-                            {theatreObj.shows
-                            .sort((showObj1, showObj2)=>{
-                                return moment(showObj1.time, "HH:mm") - moment(showObj2.time, "HH:mm");
-                            })
-                            .map(showObj => (
-                                <Button
-                                    className={`show-button ${seatAvailabilityCheck(showObj)}`}
-                                    key={showObj._id}
-                                    disabled={checkSoldOut(showObj)}
-                                >
-                                    {moment(showObj.time, "HH:mm").format("hh:mm A")}
-                                </Button>
-                            ))}
-                        </Space>                        
-                    </Flex>
-                    {(index < theatresWithShows.length-1) && <Divider style={{ borderColor: '#d9d9d9' }}/>}
-                </div>)}
+                        {(index < theatresWithShows.length-1) && <Divider style={{ borderColor: '#d9d9d9' }}/>}
+                    </div>)}
+                </>}
             </Card>
         </>);
     }

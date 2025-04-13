@@ -92,6 +92,30 @@ showRouter.get('/get-shows-by-theatre/:id', idValidityCheck, async (req, resp)=>
     }
 });
 
+showRouter.get('/get-show/:id', idValidityCheck, async (req, resp)=>{
+    try{
+        const showDoc = await ShowModel.findById(req.params.id).populate('movie').populate('theatre');
+        if(!showDoc){
+            return resp.status(404).send({
+                success: false,
+                message: "No such show exists",
+            });
+        }
+
+        resp.send({
+            success: true,
+            message: "Show fetched successfully",
+            data: showDoc,
+        });
+    }
+    catch(error){
+        resp.status(500).send({
+            success: false,
+            message: `Failed to fetch show: ${error.message}`
+        });
+    }
+});
+
 showRouter.put('/get-theatre-shows-of-movie', async (req, resp)=>{
     try{
         const {movie, date} = req.body;

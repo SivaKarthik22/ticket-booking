@@ -11,6 +11,7 @@ import AdminPage from './components/Admin/AdminPage';
 import PartnerPage from './components/Partner/PartnerPage';
 import MoviePage from './components/MoviePage';
 import './styles/component-styles.css';
+import BookingPage from './components/BookingPage';
 
 function App() {
   return (
@@ -33,7 +34,8 @@ function App() {
         <Route path='/partner-profile' element={<ProtectedComp defaultSelectionKey="3"> <PartnerProfile/> </ProtectedComp>}></Route>
         <Route path='/admin-page' element={<ProtectedComp defaultSelectionKey="2"> <AdminPage/> </ProtectedComp>}></Route>
         <Route path='/partner-page' element={<ProtectedComp defaultSelectionKey="2"> <PartnerPage/> </ProtectedComp>}></Route>
-        <Route path='/movie/:movieId' element={<ProtectedComp> <MoviePage/> </ProtectedComp>}></Route>
+        <Route path='/movie/:movieId' element={<ProtectedComp defaultSelectionKey="0"> <MoviePage/> </ProtectedComp>}></Route>
+        <Route path='/book-show/:showId' element={<ProtectedComp defaultSelectionKey="0"> <BookingPage/> </ProtectedComp>}></Route>
       </Routes>
     </ConfigProvider>
   )

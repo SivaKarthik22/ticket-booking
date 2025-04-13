@@ -172,3 +172,20 @@
 .filling-fast:hover{
     color: orange !important;
 }
+.small-box{
+    padding: 5px 8px;
+    background-color: var(--light-grey);
+    border: 1px solid var(--line-grey);
+    border-radius: 5px;
+    margin: 20px 0;
+    display: inline-block;
+}
+.seat-btn{
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    font-size: small;
+    margin: 5px;
+    border-radius: 3px;
+    border: 1px solid grey;
+}
