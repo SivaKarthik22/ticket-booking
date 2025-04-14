@@ -14,6 +14,8 @@ function BookingPage(){
     const [showIsLoading, setShowIsLoading] = useState(false);
     const {showId} = useParams();
     const [showError, setShowError] = useState(null);
+    const totalCols = 18;
+    const [selectedSeats, setSelectedSeats] = useState([]);
 
     useEffect(()=>{
         async function initilizeShow(){
@@ -35,7 +37,6 @@ function BookingPage(){
     },[showId, user]);
 
     function displaySeats(){
-        const totalCols = 20;
         const seatRows = [];
         for(let rowNum=1, seatNum=1; seatNum <= show.totalSeats; rowNum++){
             const seatRow = [];
@@ -66,18 +67,33 @@ function BookingPage(){
 
     return(<>
         {show && <>
-            <Card className="width-full">
+            <Card className="width-full" style={{marginBottom:"40px"}}>
                 <p style={{fontSize: "medium"}}>{show.movie.title}</p>
                 <p><span className="bold">{show.theatre.name}</span>: {show.theatre.address}</p>
                 <p className="bold red">{moment(show.date).format("DD MMM YYYY")}, {moment(show.time, "HH:mm").format("HH:mm A")}</p>
             </Card>
-            <Flex justify="center">
-                <div className="small-box">{show.totalSeats-show.bookedSeats.length} seats available </div>
-            </Flex>
-            <Flex justify="center">
+            <Flex align="center" vertical>
+                {(show.totalSeats-show.bookedSeats.length < 15) &&                    
+                    <div className="small-box">
+                        {show.totalSeats-show.bookedSeats.length} seats available
+                    </div>
+                }
+                <div className="price-display" style={{width:`${totalCols*30+(totalCols-1)*5}px`}}>
+                    Rs. {show.ticketPrice}
+                </div>
                 <div className="seat-grid-container">
                     {displaySeats()}
                 </div>
+                <div className="screen">Screen is this way</div>
+                <Flex align="center" gap="large">
+                    <div className="available-info info">Available</div>
+                    <div className="selected-info info">Selected</div>
+                    <div className="sold-info info">Sold</div>
+                </Flex>
+                {(selectedSeats.length != 0) && <>
+                    <p style={{margin:"60px 0 15px 0"}}>{selectedSeats.length} tickets selected</p> 
+                    <Button className="pay-btn" type="primary">Pay Rs.{selectedSeats.length * show.ticketPrice}</Button>
+                </>}
             </Flex>
         </>}
     </>);
