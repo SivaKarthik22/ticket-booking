@@ -5,6 +5,7 @@
     --line-grey: #d9d9d9;
     --grey: #999999;
     --available: #77B254;
+    --seats-grid-cols: 18;
 }
 .highlight, .highlight:hover{
     background-color: var(--highlight);
@@ -186,9 +187,12 @@
     width: 30px;
     height: 30px;
     font-size:small;
-    margin: 5px;
     border-radius: 3px;
     border: 1px solid grey;
+}
+.seat-btn:disabled{
+    border: 1px solid var(--line-grey);
+    background-color: var(--line-grey);
 }
 .price-display{
     margin-bottom: 10px;
@@ -204,7 +208,8 @@
     font-size: small;
     text-align: center;
     border-radius: 20px;
-    margin: 40px;
+    margin-top:30px;
+    margin-bottom: 40px;
 }
 .available-info::before{
     content: '';
@@ -243,4 +248,32 @@
     padding: 22px 80px;
     font-size: medium;
     border-radius: 10px;
+}
+.selected-seat{
+    border: 1px solid var(--available);
+    background-color: var(--available);
+    color: white;
+}
+.selected-seat:hover{
+    border: 1px solid var(--available) !important;
+    background-color: var(--available) !important;
+    color: white !important;
+}
+.available-seat{
+    border: 1px solid var(--available);
+    color: var(--available);
+}
+.available-seat:hover{
+    border: 1px solid var(--available) !important;
+    color: var(--available) !important;
+}
+.seat-grid-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.row{
+    display: flex;
+    gap: 10px;
 }

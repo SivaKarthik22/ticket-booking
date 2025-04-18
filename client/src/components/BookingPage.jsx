@@ -36,18 +36,80 @@ function BookingPage(){
         }
     },[showId, user]);
 
-    function displaySeats(){
+    function handleSeatClick(seatNum){
+        console.log(seatNum);
+        if(selectedSeats.includes(seatNum)){
+            const updatedSelection = selectedSeats.filter(seat => seat != seatNum);
+            setSelectedSeats(updatedSelection);
+        }
+        else{
+            setSelectedSeats([...selectedSeats, seatNum]);
+        }
+    }
+
+    /* function displaySeats(){
         const seatRows = [];
         for(let rowNum=1, seatNum=1; seatNum <= show.totalSeats; rowNum++){
             const seatRow = [];
             for(let colNum=1; colNum <= totalCols; colNum++, seatNum++){
                 seatRow.push(
-                    <Col key={seatNum}><Button key={`seat_${seatNum}`} className="seat-btn">{seatNum}</Button></Col>
+                    <Col key={`seat_${seatNum}`}>
+                        <Button key={seatNum}
+                            className={`seat-btn ${selectedSeats.includes(seatNum) ? "selected-seat" : "available-seat"}`}
+                            onClick={()=>{handleSeatClick(seatNum)} }
+                            disabled={show.bookedSeats.includes(seatNum)}
+                        >
+                            {seatNum}
+                        </Button>
+                    </Col>
                 );
             }
             seatRows.push(
                 <Row key={`row_${rowNum}`} className="row">{seatRow}</Row>
             );
+        }
+        return seatRows;
+    } */
+
+    /* function displaySeats(){
+        const seatRows = [];
+        for(let seatNum=1; seatNum <= show.totalSeats; seatNum++){
+            seatRows.push(
+                <Button key={seatNum}
+                    className={`seat-btn ${selectedSeats.includes(seatNum) ? "selected-seat" : "available-seat"}`}
+                    onClick={()=>{handleSeatClick(seatNum)} }
+                    disabled={show.bookedSeats.includes(seatNum)}
+                >
+                    {seatNum}
+                </Button>
+            );
+        }
+        return seatRows;
+    } */
+
+    function displaySeats(){
+        const seatRows = [];
+        let seats = [];
+        for(let seatNum=1, rowNum=1; seatNum <= show.totalSeats; seatNum++){
+            seats.push(
+                <Col key={`seat_${seatNum}`}>
+                    <Button key={seatNum}
+                        className={`seat-btn ${selectedSeats.includes(seatNum) ? "selected-seat" : "available-seat"}`}
+                        onClick={()=>{handleSeatClick(seatNum)} }
+                        disabled={show.bookedSeats.includes(seatNum)}
+                    >
+                        {seatNum}
+                    </Button>
+                </Col>
+            );
+            if((seatNum % totalCols == 0) || (seatNum == show.totalSeats && seats.length != 0) ){
+                rowNum++;
+                const seatRow = [...seats];
+                seatRows.push(
+                    <Row key={`row_${rowNum}`} className="row">{seatRow}</Row>
+                );
+                seats = [];
+            }
         }
         return seatRows;
     }
@@ -90,10 +152,14 @@ function BookingPage(){
                     <div className="selected-info info">Selected</div>
                     <div className="sold-info info">Sold</div>
                 </Flex>
-                {(selectedSeats.length != 0) && <>
-                    <p style={{margin:"60px 0 15px 0"}}>{selectedSeats.length} tickets selected</p> 
-                    <Button className="pay-btn" type="primary">Pay Rs.{selectedSeats.length * show.ticketPrice}</Button>
-                </>}
+                {(selectedSeats.length != 0) && 
+                    <Card className="width-full" style={{marginTop:"60px", textAlign:"center"}}>
+                        <p style={{marginBottom:"15px"}}>{selectedSeats.length} tickets selected</p> 
+                        <Button className="pay-btn" type="primary">
+                            Pay Rs.{selectedSeats.length * show.ticketPrice}
+                        </Button>
+                    </Card>
+                }
             </Flex>
         </>}
     </>);
