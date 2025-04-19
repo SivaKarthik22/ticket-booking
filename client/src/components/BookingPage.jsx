@@ -6,6 +6,7 @@ import { Button, Card, Col, Flex, Row } from "antd";
 import { getShow } from "../services/showServices";
 import ErrorComp from "./ErrorComp";
 import moment from "moment";
+import StripeCheckout from 'react-stripe-checkout';
 
 function BookingPage(){
     const {user, userLoading} = useSelector(store => store.user);
@@ -47,46 +48,6 @@ function BookingPage(){
         }
     }
 
-    /* function displaySeats(){
-        const seatRows = [];
-        for(let rowNum=1, seatNum=1; seatNum <= show.totalSeats; rowNum++){
-            const seatRow = [];
-            for(let colNum=1; colNum <= totalCols; colNum++, seatNum++){
-                seatRow.push(
-                    <Col key={`seat_${seatNum}`}>
-                        <Button key={seatNum}
-                            className={`seat-btn ${selectedSeats.includes(seatNum) ? "selected-seat" : "available-seat"}`}
-                            onClick={()=>{handleSeatClick(seatNum)} }
-                            disabled={show.bookedSeats.includes(seatNum)}
-                        >
-                            {seatNum}
-                        </Button>
-                    </Col>
-                );
-            }
-            seatRows.push(
-                <Row key={`row_${rowNum}`} className="row">{seatRow}</Row>
-            );
-        }
-        return seatRows;
-    } */
-
-    /* function displaySeats(){
-        const seatRows = [];
-        for(let seatNum=1; seatNum <= show.totalSeats; seatNum++){
-            seatRows.push(
-                <Button key={seatNum}
-                    className={`seat-btn ${selectedSeats.includes(seatNum) ? "selected-seat" : "available-seat"}`}
-                    onClick={()=>{handleSeatClick(seatNum)} }
-                    disabled={show.bookedSeats.includes(seatNum)}
-                >
-                    {seatNum}
-                </Button>
-            );
-        }
-        return seatRows;
-    } */
-
     function displaySeats(){
         const seatRows = [];
         let seats = [];
@@ -114,6 +75,9 @@ function BookingPage(){
         return seatRows;
     }
 
+    function onToken(token){
+        console.log(token)
+    }
 
     if(userLoading) return <LoadingComp/>;
     if(!user){
@@ -155,9 +119,17 @@ function BookingPage(){
                 {(selectedSeats.length != 0) && 
                     <Card className="width-full" style={{marginTop:"60px", textAlign:"center"}}>
                         <p style={{marginBottom:"15px"}}>{selectedSeats.length} tickets selected</p> 
-                        <Button className="pay-btn" type="primary">
-                            Pay Rs.{selectedSeats.length * show.ticketPrice}
-                        </Button>
+                        <StripeCheckout
+                            amount={selectedSeats.length * show.ticketPrice*100}
+                            stripeKey="pk_test_51RCO1oRuKC394fyClXoIHv46ABABJ9wk0NWxbftrMO0zY0gpkK4x6ST2FAuS0TeD1mRcU6HNA8WCw3By5lVDTzHx00zr3ALjdo"
+                            token={onToken}
+                            email={user.email}
+                            name="Pay with Card"
+                        >
+                            <Button className="pay-btn" type="primary">
+                                Pay Rs.{selectedSeats.length * show.ticketPrice}
+                            </Button>
+                        </StripeCheckout>
                     </Card>
                 }
             </Flex>
