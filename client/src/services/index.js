@@ -27,3 +27,10 @@ export const showAxiosInstance = axios.create({
         'Content-Type': 'application/json',
     },
 });
+
+export const bookingAxiosInstance = axios.create({
+    baseURL: "/api/bookings/",
+    headers : {
+        'Content-Type': 'application/json',
+    },
+});
