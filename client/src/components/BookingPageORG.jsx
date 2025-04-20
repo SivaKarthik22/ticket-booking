@@ -6,9 +6,8 @@ import { Button, Card, Col, Flex, Row, message, Spin } from "antd";
 import { getShow } from "../services/showServices";
 import ErrorComp from "./ErrorComp";
 import moment from "moment";
-//import StripeCheckout from 'react-stripe-checkout';
+import StripeCheckout from 'react-stripe-checkout';
 import { bookShow, makePayment } from "../services/bookingServices";
-import PaymentComp from "./PaymentComp";
 
 function BookingPage(){
     const {user, userLoading} = useSelector(store => store.user);
@@ -21,7 +20,6 @@ function BookingPage(){
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [messageApi, contextHolder] = message.useMessage();
     const [bookingLoading, setBookingLoading] = useState(false);
-    const [startPayment, setStartPayment] = useState(false);
 
     useEffect(()=>{
         async function initilizeShow(){
@@ -43,6 +41,7 @@ function BookingPage(){
     },[showId, user]);
 
     function handleSeatClick(seatNum){
+        console.log(seatNum);
         if(selectedSeats.includes(seatNum)){
             const updatedSelection = selectedSeats.filter(seat => seat != seatNum);
             setSelectedSeats(updatedSelection);
@@ -79,7 +78,7 @@ function BookingPage(){
         return seatRows;
     }
 
-    /* async function onToken(token){
+    async function onToken(token){
         setBookingLoading(true);
         const paymentResponseData = await makePayment(token, selectedSeats.length*show.ticketPrice*100);
         if(paymentResponseData.success){
@@ -118,7 +117,7 @@ function BookingPage(){
                 content: paymentResponseData.message,
             });
         }
-    } */
+    }
 
     if(userLoading) return <LoadingComp/>;
     if(!user){
@@ -140,70 +139,48 @@ function BookingPage(){
                 size="large"
                 fullscreen
             />
-            <Flex gap="small" style={{marginBottom:"40px"}}>
-                <Card style={{flex:0.7}}>
-                    <p style={{fontSize: "medium"}}>{show.movie.title}</p>
-                    <p><span className="bold">{show.theatre.name}</span>: {show.theatre.address}</p>
-                    <p className="bold red">{moment(show.date).format("DD MMM YYYY")}, {moment(show.time, "HH:mm").format("HH:mm A")}</p>
-                </Card>
-                <Card style={{flex:0.3}}>
-                    <p>{selectedSeats.length} seats selected:</p>
-                    <p>
-                        {selectedSeats.map((seat, index) => <span key={seat}>
-                            <span className="green bold">{seat}</span>
-                            {index < selectedSeats.length-1 ? ", " : ""} 
-                        </span>)}
-                    </p>
-                </Card>
-            </Flex>
-            {startPayment ? 
-                <Card>
-                    <h3 style={{marginBottom:"20px"}}>Total price: Rs. {selectedSeats.length * show.ticketPrice}</h3>
-                    <PaymentComp amount={selectedSeats.length * show.ticketPrice} messageApi={messageApi}/>
-                </Card>
-                :
-                <Flex align="center" vertical>
-                    {(show.totalSeats-show.bookedSeats.length < 15) &&                    
-                        <div className="small-box">
-                            {show.totalSeats-show.bookedSeats.length} seats available
-                        </div>
-                    }
-                    <div className="price-display" style={{width:`${totalCols*30+(totalCols-1)*5}px`}}>
-                        Rs. {show.ticketPrice}
+            <Card className="width-full" style={{marginBottom:"40px"}}>
+                <p style={{fontSize: "medium"}}>{show.movie.title}</p>
+                <p><span className="bold">{show.theatre.name}</span>: {show.theatre.address}</p>
+                <p className="bold red">{moment(show.date).format("DD MMM YYYY")}, {moment(show.time, "HH:mm").format("HH:mm A")}</p>
+            </Card>
+            <Flex align="center" vertical>
+                {(show.totalSeats-show.bookedSeats.length < 15) &&                    
+                    <div className="small-box">
+                        {show.totalSeats-show.bookedSeats.length} seats available
                     </div>
-                    <div className="seat-grid-container">
-                        {displaySeats()}
-                    </div>
-                    <div className="screen">Screen is this way</div>
-                    <Flex align="center" gap="large">
-                        <div className="available-info info">Available</div>
-                        <div className="selected-info info">Selected</div>
-                        <div className="sold-info info">Sold</div>
-                    </Flex>
-                    {(selectedSeats.length != 0) && 
-                        <Card className="width-full" style={{marginTop:"60px", textAlign:"center"}}>
-                            <p style={{marginBottom:"15px"}}>{selectedSeats.length} tickets selected</p> 
-                            <Button
-                                className="pay-btn"
-                                type="primary"
-                                onClick={()=>{ setStartPayment(true) }}
-                            >
+                }
+                <div className="price-display" style={{width:`${totalCols*30+(totalCols-1)*5}px`}}>
+                    Rs. {show.ticketPrice}
+                </div>
+                <div className="seat-grid-container">
+                    {displaySeats()}
+                </div>
+                <div className="screen">Screen is this way</div>
+                <Flex align="center" gap="large">
+                    <div className="available-info info">Available</div>
+                    <div className="selected-info info">Selected</div>
+                    <div className="sold-info info">Sold</div>
+                </Flex>
+                {(selectedSeats.length != 0) && 
+                    <Card className="width-full" style={{marginTop:"60px", textAlign:"center"}}>
+                        <p style={{marginBottom:"15px"}}>{selectedSeats.length} tickets selected</p> 
+                        <StripeCheckout
+                            amount={selectedSeats.length * show.ticketPrice*100}
+                            stripeKey="pk_test_51RCO1oRuKC394fyClXoIHv46ABABJ9wk0NWxbftrMO0zY0gpkK4x6ST2FAuS0TeD1mRcU6HNA8WCw3By5lVDTzHx00zr3ALjdo"
+                            token={onToken}
+                            email={user.email}
+                            name="Pay with Card"
+                        >
+                            <Button className="pay-btn" type="primary">
                                 Pay Rs.{selectedSeats.length * show.ticketPrice}
                             </Button>
-                        </Card>
-                    }
-                </Flex>
-            }
+                        </StripeCheckout>
+                    </Card>
+                }
+            </Flex>
         </>}
     </>);
 }
 
 export default BookingPage;
-
-{/* <StripeCheckout
-    amount={selectedSeats.length * show.ticketPrice*100}
-    stripeKey="pk_test_51RCO1oRuKC394fyClXoIHv46ABABJ9wk0NWxbftrMO0zY0gpkK4x6ST2FAuS0TeD1mRcU6HNA8WCw3By5lVDTzHx00zr3ALjdo"
-    token={onToken}
-    email={user.email}
-    name="Pay with Card"
-></StripeCheckout> */}

@@ -6,7 +6,7 @@ const stripe = require('stripe')("sk_test_51RCO1oRuKC394fyCUSPD5rFckXYFQRFP0Skyc
 
 const bookingRouter = express.Router();
 
-bookingRouter.post('/make-payment', async (req, resp)=>{
+/* bookingRouter.post('/make-payment', async (req, resp)=>{
     try{
         const {token, amount} = req.body;
         
@@ -40,6 +40,33 @@ bookingRouter.post('/make-payment', async (req, resp)=>{
             message: `Failed to make payment: ${error.message}`
         });
     }
+}); */
+
+bookingRouter.post('/create-payment-intent', async (req, resp)=>{
+    try{
+        const paymentIntent = await stripe.paymentIntents.create({
+            currency:'inr',
+            amount: req.body.amount*100,
+            automatic_payment_methods: {
+                enabled: true,
+            },
+        });
+
+        resp.send({
+            success: true,
+            message: 'Payment Intent created',
+            data: {
+                paymentId: paymentIntent.id,
+                clientSecret: paymentIntent.client_secret,
+            },
+        });
+    }
+    catch(error){
+        resp.status(500).send({
+            success: false,
+            message: `Failed to create payment intent: ${error.message}`
+        });
+    }
 });
 
 bookingRouter.post('/book-show', async (req, resp)=>{
@@ -54,7 +81,7 @@ bookingRouter.post('/book-show', async (req, resp)=>{
         resp.status(201).send({
             success: true,
             message: 'Tickets booked successfully',
-            data: newBookingDoc,
+            data: newBookingDoc._id,
         });
     }
     catch(error){

@@ -16,6 +16,9 @@
 .grey{
     color: var(--grey);
 }
+.green{
+    color: var(--available);
+}
 .bold{
     font-weight: bold;
 }

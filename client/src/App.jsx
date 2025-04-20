@@ -36,6 +36,7 @@ function App() {
         <Route path='/partner-page' element={<ProtectedComp defaultSelectionKey="2"> <PartnerPage/> </ProtectedComp>}></Route>
         <Route path='/movie/:movieId' element={<ProtectedComp defaultSelectionKey="0"> <MoviePage/> </ProtectedComp>}></Route>
         <Route path='/book-show/:showId' element={<ProtectedComp defaultSelectionKey="0"> <BookingPage/> </ProtectedComp>}></Route>
+        <Route path='/booking-confirmation/:bookingId' element={<ProtectedComp defaultSelectionKey="0"> </ProtectedComp>}></Route>
       </Routes>
     </ConfigProvider>
   )

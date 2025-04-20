@@ -31,3 +31,13 @@ export async function getAllBookings(){
         return error.response.data;
     }
 }
+
+export async function createPaymentIntent(amount){
+    try{
+        const response = await bookingAxiosInstance.post('/create-payment-intent', {amount});
+        return response.data;
+    }
+    catch(error){
+        return error.response.data;
+    }
+}
