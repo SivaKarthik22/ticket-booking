@@ -12,11 +12,19 @@ function Footer(){
         <Layout.Footer className="footer dark-grey-bg" >
             <div className="footer-container">
                 {!user && (
-                    <Flex gap="middle" align="center">
-                        <p>List your shows on My Day My Show:</p>
-                        <Button onClick={()=>{navigate('/register/partner')}}>
-                            Become a Partner
-                        </Button>
+                    <Flex className="width-full" justify="space-between">
+                        <Flex gap="middle" align="center">
+                            <p>List your shows on My Day My Show:</p>
+                            <Button onClick={()=>{navigate('/register/partner')}}>
+                                Become a Partner
+                            </Button>
+                        </Flex>
+                        <Flex gap="middle" align="center">
+                            <p>Are you looking for Admin page?</p>
+                            <Button onClick={()=>{navigate('/login/admin')}}>
+                                Admin Login
+                            </Button>
+                        </Flex>
                     </Flex>
                 )}
             </div>
