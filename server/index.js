@@ -5,8 +5,15 @@ const movieRouter = require('./routes/MovieRoutes');
 const theatreRouter = require('./routes/TheatreRoutes');
 const showRouter = require('./routes/ShowRoutes');
 const bookingRouter = require('./routes/BookingRoutes');
+const path = require('path');
 
 const app = express();
+
+const clientBuildPath = path.join(__dirname, "../client/dist"); // ticket booking/client/dist
+app.use(express.static(clientBuildPath));
+app.get('*', (req, resp)=>{
+    resp.sendFile(path.join(clientBuildPath, "index.html"));
+});
 
 app.use(express.json());
 app.use('/api/users', userRouter);
