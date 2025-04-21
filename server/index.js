@@ -1,20 +1,21 @@
 const express = require('express');
-const dbConfig = require('./config/dbConfig');
+const connectDB = require('./config/dbConfig');
 const userRouter = require('./routes/UserRoutes');
 const movieRouter = require('./routes/MovieRoutes');
 const theatreRouter = require('./routes/TheatreRoutes');
 const showRouter = require('./routes/ShowRoutes');
 const bookingRouter = require('./routes/BookingRoutes');
 const path = require('path');
-require("dotenv").config();
 
 const app = express();
 
+connectDB();
+
 const clientBuildPath = path.join(__dirname, "../client/dist"); // ticket booking/client/dist
 app.use(express.static(clientBuildPath));
-app.get('*', (req, resp)=>{
+/* app.get('*', (req, resp)=>{
     resp.sendFile(path.join(clientBuildPath, "index.html"));
-});
+}); */
 
 app.use(express.json());
 app.use('/api/users', userRouter);
