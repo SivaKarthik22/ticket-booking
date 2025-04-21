@@ -6,6 +6,7 @@
     --grey: #999999;
     --available: #77B254;
     --seats-grid-cols: 18;
+    --yellow: #FBF3B9
 }
 .highlight, .highlight:hover{
     background-color: var(--highlight);
@@ -24,6 +25,9 @@
 }
 .italic{
     font-style: italic;
+}
+.light{
+    font-weight:300;
 }
 .button1{
     padding: 20px;
@@ -282,4 +286,17 @@
 .row{
     display: flex;
     gap: 10px;
+}
+.ticket{
+    border: none;
+    width: 600px;
+    background-color: var(--yellow);
+}
+.link{
+    text-decoration: underline;
+    color: var(--highlight);
+}
+.booking{
+    width: 100%;
+    border: 1px solid var(--line-grey);
 }

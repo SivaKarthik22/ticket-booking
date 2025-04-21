@@ -13,6 +13,7 @@ import MoviePage from './components/MoviePage';
 import './styles/component-styles.css';
 import BookingPage from './components/BookingPage';
 import BookingConfirmation from './components/BookingConfirmation';
+import BookingHistory from './components/BookingHistory';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
         <Route path='/movie/:movieId' element={<ProtectedComp defaultSelectionKey="0"> <MoviePage/> </ProtectedComp>}></Route>
         <Route path='/book-show/:showId' element={<ProtectedComp defaultSelectionKey="0"> <BookingPage/> </ProtectedComp>}></Route>
         <Route path='/booking-confirmation/:bookingId' element={<ProtectedComp defaultSelectionKey="0"> <BookingConfirmation/> </ProtectedComp>}></Route>
+        <Route path='/bookings' element={<ProtectedComp defaultSelectionKey="0"> <BookingHistory/> </ProtectedComp>}></Route>
       </Routes>
     </ConfigProvider>
   )

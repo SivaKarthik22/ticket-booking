@@ -16,7 +16,8 @@ function NavBar({mode, defaultSelectionKey}){
         icon: <UserOutlined style={{fontSize:"16px", color:"#f84464"}} />,
         key: 3,
         children: [
-            {label: <span onClick={goToProfile}>My Profile</span> },
+            {label: <span onClick={()=>{ navigate(`/${user.role}-profile`) }}>My Profile</span> },
+            {label: <span onClick={()=>{ navigate('/bookings') }}>My Bookings</span> },
             {label: <span onClick={logout}>Sign out</span> },
         ],
     };
@@ -50,14 +51,14 @@ function NavBar({mode, defaultSelectionKey}){
         dispatch(setUser(null));
         navigate('/');
     }
-    function goToProfile(){
+    /* function goToProfile(){
         if(user.role == 'customer')
             navigate('/customer-profile');
         else if(user.role == 'admin')
             navigate('/admin-profile');
         else if(user.role == 'partner')
             navigate('/partner-profile');
-    }
+    } */
 
     return(
         <Layout.Header className="header white-bg" >

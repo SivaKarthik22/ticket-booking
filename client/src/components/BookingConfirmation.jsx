@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import PageNotFound from "./PageNotFound";
 import ErrorComp from "./ErrorComp";
 import { getBooking } from "../services/bookingServices";
 import LoadingComp from "./LoadingComp";
 import { CheckCircleTwoTone } from "@ant-design/icons";
 import { Card, Flex } from "antd";
+import moment from "moment";
 
 function BookingConfirmation(){
     const {bookingId} = useParams();
@@ -40,9 +41,29 @@ function BookingConfirmation(){
         <Flex vertical gap="large" align="center">
             <Flex vertical gap="small" align="center">
                 <CheckCircleTwoTone twoToneColor="#f8447a" style={{fontSize:"60px"}}/>
-                <p className="bold" style={{fontSize:"20px"}}>Tickets Booked Successfully!</p>
+                <p className="bold red" style={{fontSize:"20px"}}>Tickets Booked Successfully!</p>
             </Flex>
-            <Card></Card>
+            {ticket && 
+                <Card className="ticket">
+                    <Flex gap="large">
+                        <img src={ticket.show.movie.poster} height={200}/>
+                        <div>
+                            <h2>{ticket.show.movie.title}</h2>
+                            <p className="light" style={{marginBottom:"20px"}}>{ticket.show.movie.language}</p>
+                            <h3>{moment(ticket.show.date).format("DD MMM, YYYY")} | {moment(ticket.show.time, "HH:mm").format("hh:mm A")}</h3>
+                            <p>{ticket.show.theatre.name}</p>
+                            <p className="light" style={{fontSize:"12px", marginBottom:"25px"}}>{ticket.show.theatre.address}</p>
+                            <p className="bold">
+                                {ticket.seats.length} Tickets : {" "}
+                                {ticket.seats.map((seat, index) => <span key={seat}>
+                                    {seat}{index < ticket.seats.length-1 ? ", " : ""}
+                                </span>)}
+                            </p>
+                        </div>
+                    </Flex>
+                </Card>
+            }
+            <Link className="link" style={{marginTop:"30px"}} to="/bookings">Go to Booking History</Link>
         </Flex>
     );
 }
