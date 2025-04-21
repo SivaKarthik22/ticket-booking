@@ -90,7 +90,7 @@ bookingRouter.get('/get-all-bookings', authMiddleware, async (req, resp)=>{
     }
 });
 
-bookingRouter.get('/get-booking/:id', authMiddleware, idValidityCheck, async (req, resp)=>{
+bookingRouter.get('/get-booking/:id', [authMiddleware, idValidityCheck], async (req, resp)=>{
     try{
         const bookingDoc = await BookingModel.findOne({user: req.body.userId, _id: req.params.id})
             .populate('show')
@@ -110,7 +110,7 @@ bookingRouter.get('/get-booking/:id', authMiddleware, idValidityCheck, async (re
             });
         
         if(!bookingDoc){
-            resp.status(400).send({
+            return resp.status(400).send({
                 success: false,
                 message: 'No such booking exists',
             });

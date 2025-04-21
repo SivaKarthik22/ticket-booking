@@ -300,3 +300,6 @@
     width: 100%;
     border: 1px solid var(--line-grey);
 }
+.loading-card-2{
+    height: 200px;
+}

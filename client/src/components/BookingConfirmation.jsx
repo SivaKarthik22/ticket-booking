@@ -44,7 +44,7 @@ function BookingConfirmation(){
                 <p className="bold red" style={{fontSize:"20px"}}>Tickets Booked Successfully!</p>
             </Flex>
             {ticket && 
-                <Card className="ticket">
+                <Card className="ticket" style={{marginTop:"10px"}}>
                     <Flex gap="large">
                         <img src={ticket.show.movie.poster} height={200}/>
                         <div>
@@ -52,13 +52,14 @@ function BookingConfirmation(){
                             <p className="light" style={{marginBottom:"20px"}}>{ticket.show.movie.language}</p>
                             <h3>{moment(ticket.show.date).format("DD MMM, YYYY")} | {moment(ticket.show.time, "HH:mm").format("hh:mm A")}</h3>
                             <p>{ticket.show.theatre.name}</p>
-                            <p className="light" style={{fontSize:"12px", marginBottom:"25px"}}>{ticket.show.theatre.address}</p>
+                            <p className="light" style={{fontSize:"12px", marginBottom:"20px"}}>{ticket.show.theatre.address}</p>
                             <p className="bold">
                                 {ticket.seats.length} Tickets : {" "}
                                 {ticket.seats.map((seat, index) => <span key={seat}>
                                     {seat}{index < ticket.seats.length-1 ? ", " : ""}
                                 </span>)}
                             </p>
+                            <p className="bold">Rs. {ticket.seats.length * ticket.show.ticketPrice}</p>
                         </div>
                     </Flex>
                 </Card>
