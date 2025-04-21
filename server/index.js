@@ -1,5 +1,5 @@
 const express = require('express');
-const connectDB = require('./config/dbConfig');
+const dbConfig = require('./config/dbConfig');
 const userRouter = require('./routes/UserRoutes');
 const movieRouter = require('./routes/MovieRoutes');
 const theatreRouter = require('./routes/TheatreRoutes');
@@ -15,8 +15,6 @@ app.use(express.static(clientBuildPath));
 app.get('*', (req, resp)=>{
     resp.sendFile(path.join(clientBuildPath, "index.html"));
 });
-
-connectDB();
 
 app.use(express.json());
 app.use('/api/users', userRouter);
