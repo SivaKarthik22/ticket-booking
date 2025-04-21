@@ -6,42 +6,6 @@ const stripe = require('stripe')("sk_test_51RCO1oRuKC394fyCUSPD5rFckXYFQRFP0Skyc
 
 const bookingRouter = express.Router();
 
-/* bookingRouter.post('/make-payment', async (req, resp)=>{
-    try{
-        const {token, amount} = req.body;
-        
-        //create customer
-        const customer = await stripe.customers.create({
-            email: token.email,
-            source: token.id,
-        });
-
-        //create payment intent to verify the payment
-        const paymentIntent = await stripe.paymentIntents.create({
-            amount: amount,
-            customer: customer.id,
-            currency: 'usd',
-            payment_method_types: ['card'],
-            receipt_email: token.email,
-            description: "Token has been assigned to movie",
-        });
-
-        const transactionId = paymentIntent.id;
-
-        resp.status(201).send({
-            success: true,
-            message: 'Payment Successful',
-            data: transactionId,
-        });
-    }
-    catch(error){
-        resp.status(500).send({
-            success: false,
-            message: `Failed to make payment: ${error.message}`
-        });
-    }
-}); */
-
 bookingRouter.post('/create-payment-intent', async (req, resp)=>{
     try{
         const paymentIntent = await stripe.paymentIntents.create({
@@ -75,7 +39,7 @@ bookingRouter.post('/book-show', async (req, resp)=>{
         await newBookingDoc.save();
 
         const showDoc = await ShowModel.findById(req.body.show);
-        const updatedBookedSeats = [...showDoc.bookedSeats, newBookingDoc.seats];
+        const updatedBookedSeats = [...showDoc.bookedSeats, ...newBookingDoc.seats];
         await ShowModel.findByIdAndUpdate(req.body.show, {bookedSeats: updatedBookedSeats});
         
         resp.status(201).send({
@@ -121,6 +85,46 @@ bookingRouter.get('/get-all-bookings', authMiddleware, async (req, resp)=>{
         resp.status(500).send({
             success: false,
             message: `Failed to fetch all bookings: ${error.message}`
+        });
+    }
+});
+
+bookingRouter.get('/get-booking/:bookingId', authMiddleware, async (req, resp)=>{
+    try{
+        const bookingDoc = await BookingModel.findOne({user: req.body.userId, _id: req.params.bookingId})
+            .populate('show')
+            .populate({
+                path:'show',
+                populate: {
+                    path:'movie',
+                    model: 'movie',
+                }
+            })
+            .populate({
+                path:'show',
+                populate: {
+                    path:'theatre',
+                    model: 'theatre',
+                }
+            });
+        
+        if(!bookingDoc){
+            resp.status(400).send({
+                success: false,
+                message: 'No such booking exists',
+            });
+        }
+            
+        resp.status(200).send({
+            success: true,
+            message: 'Booking fetched successfully',
+            data: bookingDoc,
+        });
+    }
+    catch(error){
+        resp.status(500).send({
+            success: false,
+            message: `Failed to fetch the booking: ${error.message}`
         });
     }
 });

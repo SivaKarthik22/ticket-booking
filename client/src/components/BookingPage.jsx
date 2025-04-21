@@ -6,8 +6,7 @@ import { Button, Card, Col, Flex, Row, message, Spin } from "antd";
 import { getShow } from "../services/showServices";
 import ErrorComp from "./ErrorComp";
 import moment from "moment";
-//import StripeCheckout from 'react-stripe-checkout';
-import { bookShow, makePayment } from "../services/bookingServices";
+import { bookShow } from "../services/bookingServices";
 import PaymentComp from "./PaymentComp";
 
 function BookingPage(){
@@ -79,46 +78,31 @@ function BookingPage(){
         return seatRows;
     }
 
-    /* async function onToken(token){
+    async function bookTickets(paymentId){
         setBookingLoading(true);
-        const paymentResponseData = await makePayment(token, selectedSeats.length*show.ticketPrice*100);
-        if(paymentResponseData.success){
+        const bookingResponseData = await bookShow({
+            show: showId,
+            user: user._id,
+            seats: selectedSeats,
+            transactionId: paymentId,
+        });
+
+        setBookingLoading(false);
+
+        if(bookingResponseData.success){
             messageApi.open({
                 type: 'success',
-                content: paymentResponseData.message,
+                content: bookingResponseData.message,
             });
-
-            const bookingResponseData = await bookShow({
-                show: showId,
-                user: user._id,
-                seats: selectedSeats,
-                transactionId: paymentResponseData.data,
-            });
-
-            setBookingLoading(false);
-
-            if(bookingResponseData.success){
-                messageApi.open({
-                    type: 'success',
-                    content: bookingResponseData.message,
-                });
-                navigate(`/booking-confirmation/${bookingResponseData.data}`);
-            }
-            else{
-                messageApi.open({
-                    type: 'error',
-                    content: bookingResponseData.message,
-                });    
-            }
+            navigate(`/booking-confirmation/${bookingResponseData.data}`);
         }
         else{
-            setBookingLoading(false);
             messageApi.open({
                 type: 'error',
-                content: paymentResponseData.message,
-            });
+                content: bookingResponseData.message,
+            });    
         }
-    } */
+    }
 
     if(userLoading) return <LoadingComp/>;
     if(!user){
@@ -159,7 +143,11 @@ function BookingPage(){
             {startPayment ? 
                 <Card>
                     <h3 style={{marginBottom:"20px"}}>Total price: Rs. {selectedSeats.length * show.ticketPrice}</h3>
-                    <PaymentComp amount={selectedSeats.length * show.ticketPrice} messageApi={messageApi}/>
+                    <PaymentComp
+                        amount={selectedSeats.length * show.ticketPrice}
+                        messageApi={messageApi}
+                        bookTickets = {bookTickets}
+                    />
                 </Card>
                 :
                 <Flex align="center" vertical>
@@ -199,11 +187,3 @@ function BookingPage(){
 }
 
 export default BookingPage;
-
-{/* <StripeCheckout
-    amount={selectedSeats.length * show.ticketPrice*100}
-    stripeKey="pk_test_51RCO1oRuKC394fyClXoIHv46ABABJ9wk0NWxbftrMO0zY0gpkK4x6ST2FAuS0TeD1mRcU6HNA8WCw3By5lVDTzHx00zr3ALjdo"
-    token={onToken}
-    email={user.email}
-    name="Pay with Card"
-></StripeCheckout> */}

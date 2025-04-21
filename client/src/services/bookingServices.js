@@ -1,8 +1,8 @@
 import { bookingAxiosInstance } from ".";
 
-export async function makePayment(token, amount){
+export async function bookShow(bookingDetails){
     try{
-        const response = await bookingAxiosInstance.post('/make-payment', {token, amount});
+        const response = await bookingAxiosInstance.post('/book-show', bookingDetails);
         return response.data;
     }
     catch(error){
@@ -10,9 +10,9 @@ export async function makePayment(token, amount){
     }
 }
 
-export async function bookShow(bookingDetails){
+export async function createPaymentIntent(amount){
     try{
-        const response = await bookingAxiosInstance.post('/book-show', bookingDetails);
+        const response = await bookingAxiosInstance.post('/create-payment-intent', {amount});
         return response.data;
     }
     catch(error){
@@ -32,9 +32,11 @@ export async function getAllBookings(){
     }
 }
 
-export async function createPaymentIntent(amount){
+export async function getBooking(bookingId){
     try{
-        const response = await bookingAxiosInstance.post('/create-payment-intent', {amount});
+        const response = await bookingAxiosInstance.get(`/get-booking/${bookingId}`, {
+            headers: {'authorization': `Bearer ${localStorage.getItem('token')}` }
+        });
         return response.data;
     }
     catch(error){

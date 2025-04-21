@@ -12,6 +12,7 @@ import PartnerPage from './components/Partner/PartnerPage';
 import MoviePage from './components/MoviePage';
 import './styles/component-styles.css';
 import BookingPage from './components/BookingPage';
+import BookingConfirmation from './components/BookingConfirmation';
 
 function App() {
   return (
@@ -36,7 +37,7 @@ function App() {
         <Route path='/partner-page' element={<ProtectedComp defaultSelectionKey="2"> <PartnerPage/> </ProtectedComp>}></Route>
         <Route path='/movie/:movieId' element={<ProtectedComp defaultSelectionKey="0"> <MoviePage/> </ProtectedComp>}></Route>
         <Route path='/book-show/:showId' element={<ProtectedComp defaultSelectionKey="0"> <BookingPage/> </ProtectedComp>}></Route>
-        <Route path='/booking-confirmation/:bookingId' element={<ProtectedComp defaultSelectionKey="0"> </ProtectedComp>}></Route>
+        <Route path='/booking-confirmation/:bookingId' element={<ProtectedComp defaultSelectionKey="0"> <BookingConfirmation/> </ProtectedComp>}></Route>
       </Routes>
     </ConfigProvider>
   )
