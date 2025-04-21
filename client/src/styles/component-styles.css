@@ -197,6 +197,9 @@
     border: 1px solid var(--line-grey);
     background-color: var(--line-grey);
 }
+.seat-btn:disabled:hover{
+    border: 1px solid var(--line-grey) !important;
+}
 .price-display{
     margin-bottom: 10px;
     text-align: center;

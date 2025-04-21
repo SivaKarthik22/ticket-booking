@@ -2,6 +2,7 @@ const express = require('express');
 const BookingModel = require('../models/BookingModel');
 const ShowModel = require('../models/ShowModel');
 const authMiddleware = require('../middlewares/authMiddleware');
+const idValidityCheck = require('../middlewares/idValidityCheck');
 const stripe = require('stripe')("sk_test_51RCO1oRuKC394fyCUSPD5rFckXYFQRFP0SkycPGIxq46XrDAVXhr01DgYshzvAipYKjCjdlj8lznJm68oSyhDcUz00PEA8RBxP");
 
 const bookingRouter = express.Router();
@@ -89,9 +90,9 @@ bookingRouter.get('/get-all-bookings', authMiddleware, async (req, resp)=>{
     }
 });
 
-bookingRouter.get('/get-booking/:bookingId', authMiddleware, async (req, resp)=>{
+bookingRouter.get('/get-booking/:id', authMiddleware, idValidityCheck, async (req, resp)=>{
     try{
-        const bookingDoc = await BookingModel.findOne({user: req.body.userId, _id: req.params.bookingId})
+        const bookingDoc = await BookingModel.findOne({user: req.body.userId, _id: req.params.id})
             .populate('show')
             .populate({
                 path:'show',
