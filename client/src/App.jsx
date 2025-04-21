@@ -22,8 +22,6 @@ function App() {
         token:{
           colorPrimary: "#f84464",
           colorPrimaryHover: "#ff496b",
-          //colorBgContainer: "#f5f5f5",
-          //defaultBorderColor: "#f84464"
         },
       }}
     >
