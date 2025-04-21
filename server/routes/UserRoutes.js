@@ -57,7 +57,7 @@ userRouter.post('/login', async (req, resp) => {
             });
         }
 
-        const jwtToken = jwt.sign({userId: userDoc._id}, 'this_is_my_show', {expiresIn: '2d'});
+        const jwtToken = jwt.sign({userId: userDoc._id}, process.env.JWT_SECRET , {expiresIn: '2d'});
 
         resp.send({
             success: true,

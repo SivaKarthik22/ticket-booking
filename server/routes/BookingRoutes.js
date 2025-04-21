@@ -3,7 +3,7 @@ const BookingModel = require('../models/BookingModel');
 const ShowModel = require('../models/ShowModel');
 const authMiddleware = require('../middlewares/authMiddleware');
 const idValidityCheck = require('../middlewares/idValidityCheck');
-const stripe = require('stripe')("sk_test_51RCO1oRuKC394fyCUSPD5rFckXYFQRFP0SkycPGIxq46XrDAVXhr01DgYshzvAipYKjCjdlj8lznJm68oSyhDcUz00PEA8RBxP");
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const bookingRouter = express.Router();
 
