@@ -92,10 +92,10 @@ userRouter.get("/get-valid-user", authMiddleware, async (req, resp)=>{
     }
 });
 
-userRouter.get("/forgot-password", async (req, resp)=>{
+userRouter.post("/mail-otp", async (req, resp)=>{
     try{
         if(!req.body.email){
-            resp.status(400).send({
+            return resp.status(400).send({
                 success: false,
                 message: "Email required!"
             });

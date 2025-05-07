@@ -2,7 +2,7 @@ import { userAxiosInstance } from ".";
 
 export async function registerUser(values){
     try{
-        const response = await userAxiosInstance.post("/register", values)
+        const response = await userAxiosInstance.post("/register", values);
         return response.data;
     }
     catch(error){
@@ -12,7 +12,7 @@ export async function registerUser(values){
 
 export async function loginUser(values){
     try{
-        const response = await userAxiosInstance.post("/login", values)
+        const response = await userAxiosInstance.post("/login", values);
         return response.data;
     }
     catch(error){
@@ -40,4 +40,14 @@ export function authorizeUser(){
         .then(response => {resolve(response.data)} )
         .catch(error => {reject(error.response.data)} );
     });
+}
+
+export async function generateOTP(values){
+    try{
+        const response = await userAxiosInstance.post("/mail-otp", values);
+        return response.data;
+    }
+    catch(error){
+        return error.response.data;
+    }
 }
