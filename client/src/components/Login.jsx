@@ -102,6 +102,9 @@ function Login(){
                             </Button>
                         </Form.Item>
 
+                        <p className="login-text" style={{marginBottom:"10px"}}>
+                            <Link to={`/forgot-password`}>Forgot Password</Link>
+                        </p>
                         <p className="login-text">
                             New {role}? <Link to={`/register/${role}`}>Register Here</Link>
                         </p>

@@ -14,6 +14,8 @@ import './styles/component-styles.css';
 import BookingPage from './components/BookingPage';
 import BookingConfirmation from './components/BookingConfirmation';
 import BookingHistory from './components/BookingHistory';
+import ForgotPassword from './components/ForgotPassword';
+import ResetPassword from './components/ResetPassword';
 
 function App() {
   return (
@@ -28,6 +30,9 @@ function App() {
       <Routes>
         <Route path='/register/:role' element={<Register/>}></Route>
         <Route path='/login/:role' element={<Login/>}></Route>
+        <Route path='/forgot-password' element={<ForgotPassword/>}></Route>
+        <Route path='/reset-password' element={<ResetPassword/>}></Route>
+        <Route path='/reset-password/:role'></Route>
         <Route path='/' element={<ProtectedComp defaultSelectionKey="1"> <Home/> </ProtectedComp>}></Route>
         <Route path='/customer-profile' element={<ProtectedComp defaultSelectionKey="3"> <CustomerProfile/> </ProtectedComp>}></Route>
         <Route path='/admin-profile' element={<ProtectedComp defaultSelectionKey="3"> <AdminProfile/> </ProtectedComp>}></Route>

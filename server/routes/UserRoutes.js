@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const UserModel = require('../models/UserModel.js');
 const authMiddleware = require('../middlewares/authMiddleware.js');
+const emailHelper = require('../emailing/emailHelper.js');
 
 const userRouter = express.Router();
 
@@ -87,6 +88,42 @@ userRouter.get("/get-valid-user", authMiddleware, async (req, resp)=>{
         resp.status(500).send({
             success: false,
             message: `Failed to authorize user: ${error.message}`
+        });
+    }
+});
+
+userRouter.get("/forgot-password", async (req, resp)=>{
+    try{
+        if(!req.body.email){
+            resp.status(400).send({
+                success: false,
+                message: "Email required!"
+            });
+        }
+        
+        const userDoc = await UserModel.findOne({email: req.body.email});
+        if(!userDoc){
+            return resp.status(404).send({
+                success: false,
+                message: "No such user exists"
+            });
+        }
+        
+        userDoc.otp = Math.floor(Math.random() * 10000 + 90000); // otp will be generated in th range of 90000 to 99999
+        userDoc.otpExpiry = Date.now() + 10*60*1000; // 10 mins from now
+        await userDoc.save();
+
+        await emailHelper('otp.html', req.body.email, {name: userDoc.name, otp: userDoc.otp});
+
+        resp.status(200).send({
+            success: true,
+            message: "OTP has been sent"
+        });
+    }
+    catch(error){
+        resp.status(500).send({
+            success: false,
+            message: `Failed to send otp: ${error.message}`, 
         });
     }
 });

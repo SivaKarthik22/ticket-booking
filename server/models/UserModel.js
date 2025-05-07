@@ -21,7 +21,13 @@ const userSchema = new mongoose.Schema({
         required: true,
         enum: ['admin', 'partner', 'customer'],
         default: 'customer',
-    }
+    },
+    otp:{
+        type: String, 
+    },
+    otpExpiry:{
+        type: Date,
+    },
 });
 
 //pre-save hook for hashing password before saving
