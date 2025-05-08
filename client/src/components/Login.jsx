@@ -1,5 +1,4 @@
 import { Form, Input, Button, message, Spin, Layout } from "antd";
-import '../styles/component-styles.css';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { loginUser } from "../services/userServices";
 import { useState, useEffect } from "react";

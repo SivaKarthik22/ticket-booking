@@ -1,4 +1,3 @@
-import {  } from "@ant-design/icons";
 import { Flex, Spin } from "antd";
 
 function LoadingComp({context}){

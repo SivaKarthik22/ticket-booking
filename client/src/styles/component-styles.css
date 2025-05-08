@@ -303,3 +303,10 @@
 .loading-card-2{
     height: 200px;
 }
+.page-center{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

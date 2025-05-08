@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import UserSlice from "../redux/UserSlice";
 import { Layout } from "antd";
-import '../styles/component-styles.css'
 import { getUser } from "../redux/UserSlice";
 import NavBar from "./NavBar";
 import Footer from "./Footer";

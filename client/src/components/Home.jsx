@@ -2,10 +2,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllMovies } from "../redux/MovieSlice";
 import { Card, Flex } from "antd";
-import '../styles/component-styles.css';
 import ErrorComp from "./ErrorComp";
 import { useNavigate } from 'react-router-dom';
-import moment from "moment";
 
 function Home(){
     const {movies, isLoading, errorMsg} = useSelector(store => store.movies);

@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import UserSlice from "../redux/UserSlice";
 import { UserOutlined } from '@ant-design/icons';
-import '../styles/component-styles.css'
 
 function NavBar({mode, defaultSelectionKey}){
     const {user} = useSelector(store=> store.user);

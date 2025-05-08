@@ -2,8 +2,6 @@ import { Button, Flex, Layout } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useSelector} from "react-redux";
 
-import '../styles/component-styles.css'
-
 function Footer(){
     const {user} = useSelector(store=> store.user);
     const navigate = useNavigate();

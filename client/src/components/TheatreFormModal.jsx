@@ -1,4 +1,4 @@
-import { Button, Flex, Modal, Form, Input, InputNumber, Select, Spin } from "antd";
+import { Button, Flex, Modal, Form, Input, Spin } from "antd";
 import { useEffect } from "react";
 
 function TheatreFormModal({closeModal, submitTheatreForm, form, modalIsOpen, formIsLoading, formType, curTheatre}){
