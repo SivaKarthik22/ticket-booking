@@ -1,9 +1,14 @@
 import { Tabs, message } from "antd";
 import { useSelector } from "react-redux";
+import { lazy, Suspense} from 'react';
 import AccessDeny from "../AccessDeny";
-import MovieTable from "./MovieTable";
 import LoadingComp from "../LoadingComp";
-import TheatreTable from "../TheatreTable";
+
+//import TheatreTable from "../TheatreTable";
+//import MovieTable from "./MovieTable";
+
+const MovieTable = lazy(()=> import("./MovieTable"));
+const TheatreTable = lazy(()=> import("../TheatreTable"));
 
 function AdminPage(){
     const {user, userLoading} = useSelector(store=> store.user);
@@ -13,12 +18,18 @@ function AdminPage(){
         {
             key: 1,
             label: 'Movies List',
-            children: <MovieTable messageApi={messageApi} />,
+            children: 
+                <Suspense fallback={<LoadingComp/>}>
+                    <MovieTable messageApi={messageApi} />    
+                </Suspense>,
         },
         {
             key: 2,
             label: 'Theatres List',
-            children: <TheatreTable messageApi={messageApi} />,
+            children:
+                <Suspense fallback={<LoadingComp/>}>
+                    <TheatreTable messageApi={messageApi} />
+                </Suspense>,
         },
     ];
 
