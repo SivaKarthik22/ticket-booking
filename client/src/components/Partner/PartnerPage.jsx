@@ -1,9 +1,14 @@
 import { Tabs, message } from "antd";
 import { useSelector } from "react-redux";
 import AccessDeny from "../AccessDeny";
-import TheatreTable from "../TheatreTable";
 import LoadingComp from "../LoadingComp";
-import ShowsComp from "./ShowsComp";
+import { lazy, Suspense } from "react";
+
+//import ShowsComp from "./ShowsComp";
+//import TheatreTable from "../TheatreTable";
+
+const ShowsComp = lazy(()=> import("./ShowsComp"));
+const TheatreTable = lazy(()=> import("../TheatreTable"));
 
 function PartnerPage(){
     const {user, userLoading} = useSelector(store => store.user);
@@ -13,12 +18,18 @@ function PartnerPage(){
         {
             key: 1,
             label: 'My Theatres',
-            children: <TheatreTable messageApi={messageApi} />,
+            children: 
+                <Suspense fallback={<LoadingComp/>}>
+                    <TheatreTable messageApi={messageApi} />
+                </Suspense>,
         },
         {
             key: 2,
             label: 'My Shows',
-            children: <ShowsComp messageApi={messageApi}/>,
+            children: 
+                <Suspense fallback={<LoadingComp/>}>
+                    <ShowsComp messageApi={messageApi}/>
+                </Suspense>,
         },
     ];
 

@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
     otpExpiry:{
         type: Date,
     },
-});
+}, {timestamps: true});
 
 //pre-save hook for hashing password before saving
 userSchema.pre('save', async function (next){

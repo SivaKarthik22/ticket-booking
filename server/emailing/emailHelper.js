@@ -19,8 +19,8 @@ function updateContent(templateContent, credentials){
 
 async function emailHelper(templateName, receiverEmail, credentials){
     //try{
-        const temlatePath = path.join(__dirname, 'email_templates', templateName);
-        const templateContent = await fs.promises.readFile(temlatePath, 'utf-8');
+        const templatePath = path.join(__dirname, 'email_templates', templateName);
+        const templateContent = await fs.promises.readFile(templatePath, 'utf-8');
         const updatedContent = updateContent(templateContent, credentials);
         let subject = (templateName == "otp.html") ? "OTP for resetting password of your MyDayMyShow account" : "Booking Confirmation from My Day My Show";
         await transportObj.sendMail({
