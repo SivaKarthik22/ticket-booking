@@ -128,12 +128,54 @@ userRouter.post("/mail-otp", async (req, resp)=>{
     }
 });
 
-userRouter.get('/verify-otp', async (req, resp)=>{
+userRouter.post('/verify-otp', async (req, resp)=>{
+    try{
+        if(!req.body.otp || !req.body.email || !req.body.newPassword){
+            return resp.status(400).send({
+                success: false,
+                message: "required inputs not provided",
+            });
+        }
+        
+        const userDoc = await UserModel.findOne({email: req.body.email});
 
-});
+        if(!userDoc){
+            return resp.status(404).send({
+                success: false,
+                message: "No such user exists"
+            });
+        }
 
-userRouter.post('/reset-password', async (req, resp)=>{
+        if(userDoc.otpExpiry < Date.now()){
+            return resp.status(401).send({
+                success: false,
+                message: "OTP expired. Request new OTP",
+            });
+        }
 
+        if(userDoc.otp === req.body.otp){
+            userDoc.password = req.body.newPassword;
+            userDoc.otp = null;
+            userDoc.otpExpiry = null;
+            await userDoc.save();
+            return resp.status(200).send({
+                success: true,
+                message: "Password reset successfully",
+            });
+        }
+        else{
+            return resp.status(401).send({
+                success: false,
+                message: "entered OTP is incorrect",
+            });
+        }
+    }
+    catch(error){
+        resp.status(500).send({
+            success: false,
+            message: `Failed to verify otp: ${error.message}`, 
+        });
+    }
 });
 
 module.exports = userRouter;

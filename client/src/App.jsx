@@ -23,7 +23,6 @@ const BookingPage = lazy(()=> import('./components/BookingPage'));
 const BookingConfirmation = lazy(()=> import('./components/BookingConfirmation'));
 const BookingHistory = lazy(()=> import('./components/BookingHistory'));
 const ForgotPassword = lazy(()=> import('./components/ForgotPassword'));
-//const ResetPassword = lazy(()=> import('./components/ResetPassword'));
 
 
 function App() {
@@ -41,7 +40,6 @@ function App() {
           <Route path='/register/:role' element={<Register/>}></Route>
           <Route path='/login/:role' element={<Login/>}></Route>
           <Route path='/forgot-password' element={<ForgotPassword/>}></Route>
-          {/* <Route path='/reset-password' element={<ResetPassword/>}></Route> */}
           <Route path='/' element={<ProtectedComp defaultSelectionKey="1"> <Home/> </ProtectedComp>}></Route>
           <Route path='/customer-profile' element={<ProtectedComp defaultSelectionKey="3"> <CustomerProfile/> </ProtectedComp>}></Route>
           <Route path='/admin-profile' element={<ProtectedComp defaultSelectionKey="3"> <AdminProfile/> </ProtectedComp>}></Route>

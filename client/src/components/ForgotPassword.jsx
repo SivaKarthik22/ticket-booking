@@ -1,22 +1,23 @@
-import { Form, Input, Button, message, Layout, Spin } from "antd";
+import { Form, Flex, Input, Button, message, Layout} from "antd";
 import { useNavigate, Link } from 'react-router-dom';
-import { generateOTP} from "../services/userServices";
+import { generateOTP, resetPassword} from "../services/userServices";
 import { useState, useEffect } from "react";
 import { getUser } from "../redux/UserSlice";
 import { useSelector, useDispatch } from "react-redux";
 import NavBar from "./NavBar";
+import { CheckCircleTwoTone } from "@ant-design/icons";
 
 function ForgotPassword(){
     const [messageApi, contextHolder] = message.useMessage();
     const [form1] = Form.useForm();
     const [form2] = Form.useForm();
-    const [form3] = Form.useForm();
     const navigate = useNavigate();
     const [processing, setProcessing] = useState(false);
     const {user} = useSelector(store => store.user);
     const dispatch = useDispatch();
     const [stage, setStage] = useState(1);
     const [otpTimer, setOtpTimer] = useState(true);
+    const [email, setEmail] = useState(null);
 
     useEffect(()=>{
         if(user)
@@ -33,6 +34,7 @@ function ForgotPassword(){
                 type: 'success',
                 content: responseData.message,
             });
+            setEmail(values.email);
             setStage(2);
             setOtpTimer(true);
             setTimeout(()=>{setOtpTimer(false)}, 60000);
@@ -49,30 +51,55 @@ function ForgotPassword(){
     async function submitForm2(values){
         setProcessing(true);
         setOtpTimer(true);
+        const responseData = await resetPassword({...values, email});
+        if(responseData.success){
+            setStage(3);
+            setTimeout(()=>{navigate('/')}, 1000);
+        }
+        else{
+            messageApi.open({
+                type: 'error',
+                content: responseData.message,
+            });
+            setProcessing(false);
+            setOtpTimer(false);
+        }
         
     }
 
     async function resendOTP(){
         setOtpTimer(true);
-        setTimeout(()=>{setOtpTimer(false)},60000);
+        const responseData = await generateOTP({email});
+        if(responseData.success){
+            messageApi.open({
+                type: 'success',
+                content: responseData.message,
+            });
+            setTimeout(()=>{setOtpTimer(false)}, 60000);
+        }
+        else{
+            messageApi.open({
+                type: 'error',
+                content: responseData.message,
+            });
+            setOtpTimer(false);
+        }
     }
-    
-    async function submitForm3(values){}
+
+    function checkEmail(){
+        if(!email)
+            setStage(1);
+    }
 
     return(
         <Layout>
             {contextHolder}
-            {/* <Spin
-                spinning={processing}
-                size="large"
-                fullscreen
-            /> */}
             <NavBar mode="login" />
             <Layout.Content className="white-bg content">
                 <div className="page-container">
                     {stage==1 && <Form1 form={form1} submitForm={submitForm1} processing={processing}/>}
-                    {stage==2 && <Form2 form={form2} submitForm={submitForm2} processing={processing} otpTimer={otpTimer} resendOTP={resendOTP}/>}
-                    {stage==3 && <Form3 form={form3} submitForm={submitForm3} processing={processing}/>}
+                    {stage==2 && <Form2 form={form2} submitForm={submitForm2} processing={processing} otpTimer={otpTimer} resendOTP={resendOTP} checkEmail={checkEmail}/>}
+                    {stage==3 && <Confirmation/>}
                 </div>
             </Layout.Content>
         </Layout>
@@ -93,7 +120,7 @@ function Form1({form, submitForm, processing}){
             <h2 className="form-heading">Forgot Password</h2>
 
             <Form.Item
-                label="E-mail"
+                label="Enter E-mail"
                 name="email"
                 rules={[
                     {required: true, message: "Please enter your e-mail"}
@@ -120,7 +147,9 @@ function Form1({form, submitForm, processing}){
     );
 }
 
-function Form2({form, submitForm, processing, otpTimer, resendOTP}){
+function Form2({form, submitForm, processing, otpTimer, resendOTP, checkEmail}){
+    useEffect(checkEmail, []);
+
     return(
         <Form
             form={form}
@@ -128,16 +157,26 @@ function Form2({form, submitForm, processing, otpTimer, resendOTP}){
             layout="vertical"
             className="form-container grey-bg"
         >
-            <h2 className="form-heading">OTP Verification</h2>
+            <h2 className="form-heading">Reset Password</h2>
 
             <Form.Item
-                label="Enter the OTP that you received in mail"
+                label="Enter OTP received in mail"
                 name="otp"
                 rules={[
                     {required: true, message: "Please enter OTP"}
                 ]}
             >
                 <Input type="number" className="form-input"/>
+            </Form.Item>
+
+            <Form.Item
+                label="Enter new password"
+                name="newPassword"
+                rules={[
+                    {required: true, message: "Please enter new password"}
+                ]}
+            >
+                <Input.Password className="form-input"/>
             </Form.Item>
 
             <Form.Item label={null}>
@@ -147,7 +186,7 @@ function Form2({form, submitForm, processing, otpTimer, resendOTP}){
                     htmlType="submit"
                     disabled={processing}
                 >
-                    Verify OTP
+                    Reset Password
                 </Button>
             </Form.Item>
 
@@ -166,36 +205,11 @@ function Form2({form, submitForm, processing, otpTimer, resendOTP}){
     );
 }
 
-function Form3({form, submitForm, processing}){
+function Confirmation(){
     return(
-        <Form
-            form={form}
-            onFinish={submitForm}
-            layout="vertical"
-            className="form-container grey-bg"
-        >
-            <h2 className="form-heading">Reset Password</h2>
-
-            <Form.Item
-                label="Enter new password"
-                name="password"
-                rules={[
-                    {required: true, message: "Please enter new password"}
-                ]}
-            >
-                <Input className="form-input"/>
-            </Form.Item>
-
-            <Form.Item label={null}>
-                <Button
-                    className="button1 login-btn"
-                    type="primary"
-                    htmlType="submit"
-                    disabled={processing}
-                >
-                    Reset Password
-                </Button>
-            </Form.Item>
-        </Form>
+        <Flex vertical gap="middle" align="center" justify="center" style={{height:"50vh"}}>
+            <CheckCircleTwoTone twoToneColor="#f8447a" style={{fontSize:"60px"}}/>
+            <p className="bold red" style={{fontSize:"20px"}}>Password Reset Successfully</p>
+        </Flex>
     );
 }

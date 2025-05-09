@@ -51,3 +51,13 @@ export async function generateOTP(values){
         return error.response.data;
     }
 }
+
+export async function resetPassword(values){
+    try{
+        const response = await userAxiosInstance.post("/verify-otp", values);
+        return response.data;
+    }
+    catch(error){
+        return error.response.data;
+    }
+}
