@@ -7,7 +7,10 @@ import { getShow } from "../services/showServices";
 import ErrorComp from "./ErrorComp";
 import moment from "moment";
 import { bookShow } from "../services/bookingServices";
-import PaymentComp from "./PaymentComp";
+import { lazy, Suspense } from "react";
+
+//import PaymentComp from "./PaymentComp";
+const PaymentComp = lazy(()=> import("./PaymentComp"));
 
 function BookingPage(){
     const {user, userLoading} = useSelector(store => store.user);
@@ -143,11 +146,13 @@ function BookingPage(){
             {startPayment ? 
                 <Card>
                     <h3 style={{marginBottom:"20px"}}>Total price: Rs. {selectedSeats.length * show.ticketPrice}</h3>
-                    <PaymentComp
-                        amount={selectedSeats.length * show.ticketPrice}
-                        messageApi={messageApi}
-                        bookTickets = {bookTickets}
-                    />
+                    <Suspense fallback={<LoadingComp context="Data"/>}>
+                        <PaymentComp
+                            amount={selectedSeats.length * show.ticketPrice}
+                            messageApi={messageApi}
+                            bookTickets = {bookTickets}
+                        />
+                    </Suspense>
                 </Card>
                 :
                 <Flex align="center" vertical>

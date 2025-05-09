@@ -44,7 +44,7 @@ function PaymentComp({amount, messageApi, bookTickets}){
                     />
                 </Elements>
                 :
-                <LoadingComp/>
+                <LoadingComp context="Data"/>
             }
         </>
     );
