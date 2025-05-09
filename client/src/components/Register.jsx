@@ -56,7 +56,7 @@ function Register(){
         }
         else{
             messageApi.open({
-                type: 'warning',
+                type: 'error',
                 content: responseData.message,
             });
             form.resetFields();
