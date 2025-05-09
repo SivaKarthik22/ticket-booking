@@ -15,7 +15,7 @@ const app = express();
 
 connectDB();
 
-const clientBuildPath = path.join(__dirname, "../client/dist"); // ticket booking/client/dist
+const clientBuildPath = path.join(__dirname, "../client/dist"); // C:\Users\Siva Karthik\OneDrive\scaler\practice projects\mern\ticket booking\client\dist
 app.use(express.static(clientBuildPath));
 
 const limiter = rateLimit({
