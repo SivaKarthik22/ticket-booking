@@ -20,12 +20,12 @@ function Register(){
             navigate('/');
             return;
         }
-        if(localStorage.getItem('token'))
-            dispatch(getUser());
     },[]);
     useEffect(()=>{
         if(user)
             navigate('/');
+        else if(localStorage.getItem('token'))
+            dispatch(getUser());
     },[user]);
 
     async function registerData(values){

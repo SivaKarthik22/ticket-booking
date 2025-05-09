@@ -128,4 +128,12 @@ userRouter.post("/mail-otp", async (req, resp)=>{
     }
 });
 
+userRouter.get('/verify-otp', async (req, resp)=>{
+
+});
+
+userRouter.post('/reset-password', async (req, resp)=>{
+
+});
+
 module.exports = userRouter;
